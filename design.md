@@ -31,7 +31,7 @@ A covid dashboard containing browsable graphs, which re
 
   https://explore.postman.com/network/search?q=covid
 
-  ![image-20201029224547485](.\images\image-20201029224547485.png)
+  ![image-20201029224547485](./images/image-20201029224547485.png)
 
   1. covid-19 api:
 
