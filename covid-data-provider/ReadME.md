@@ -29,10 +29,6 @@ auth:
 | secured  | GET    | /state/{}     | N/A           | USER, ADMIN   |
 | secured  | GET    | /logs         | N/A           | USER, ADMIN   |
 
-- open:
-    - POST / :  
-    - POST /signup : LoginRequest
-- protected:
 ### Notes:
 - openapi3: http://localhost:8080/v3/api-docs/
 - 
