@@ -1,0 +1,57 @@
+server:
+  port: 8080
+logging:
+  level:
+    root: INFO
+    com.pritamprasad: TRACE
+    org:
+      springframework:
+        security: DEBUG
+covid19india:
+  url:
+    latestLog: https://api.covid19india.org/updatelog/log.json
+    datewiseSummary: https://api.covid19india.org/v4/min/data-YYYY-MM-DD.min.json
+  fixedDelay: 86400000   #in millis
+  timeTravelMinusDays: 3
+  pastDataInNumberOfDays: 2
+auth:
+  jwtSecret: covidDashboardSecretKeySample
+  jwtExpirationMs: 86400000
+---
+spring:
+  profiles:
+    - local
+  datasource:
+    url: jdbc:h2:mem:coviddb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 300000
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+---
+spring:
+  profiles:
+    - dev
+  datasource:
+    url: jdbc:postgresql://192.168.1.16:5432/coviddb
+    username: ecomadmin
+    password: hello@123
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 5
+      idle-timeout: 300000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+

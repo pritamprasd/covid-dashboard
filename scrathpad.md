@@ -4,15 +4,11 @@
 A covid dashboard containing browsable graphs, which re
 
 1. ui:
-
    - reactjs + Material-UI
    - graphQL client
    - s3 hosted
    - responsive : laptop, tablet, mobile screen size
    - countries should be configurable, default being india.
-   - 
-
-   
 
 2. service:
 
@@ -21,17 +17,13 @@ A covid dashboard containing browsable graphs, which re
    - graphQL data endpoint, REST auth endpoint
    - aws deployed with LB.
 
-
-
-
-
 #### Design constraints:
 
 - Which api to use to get covid data? (whether to take server-push approach?)
 
   https://explore.postman.com/network/search?q=covid
 
-  ![image-20201029224547485](.\images\image-20201029224547485.png)
+  ![image-20201029224547485](./images/image-20201029224547485.png)
 
   1. covid-19 api:
 
@@ -96,4 +88,7 @@ A covid dashboard containing browsable graphs, which re
 
 - Dashboard Idea from: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
 
+- Covid India: https://www.covid19india.org/ 
+
+- Saved calls for covid19india: https://www.getpostman.com/collections/2afb23eddb8accf94c3e
 - 
