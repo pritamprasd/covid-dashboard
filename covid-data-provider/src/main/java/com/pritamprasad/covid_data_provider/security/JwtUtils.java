@@ -1,5 +1,6 @@
 package com.pritamprasad.covid_data_provider.security;
 
+import com.pritamprasad.covid_data_provider.exception.InvalidTokenInHeaderException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClaims;
 import org.slf4j.Logger;
@@ -26,8 +27,16 @@ public class JwtUtils {
 
 
     public String decodeToken(String token){
-        Jwt jwt = Jwts.parser().setSigningKey(jwtSecret).parse(token);
-        return jwt.getHeader().toString() +"\n----\n" +jwt.getBody().toString();
+        try {
+            Jwt jwt = Jwts.parser().setSigningKey(jwtSecret).parse(token);
+            Date now = new Date(System.currentTimeMillis());
+            Date expire = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getExpiration();
+            return jwt.getHeader().toString() + "\n----\n"
+                    + jwt.getBody().toString() + "\n----\n"
+                    +"Will expire in: "+ Math.abs(now.getTime() - expire.getTime())/1000.0 +" seconds"  ;
+        } catch (Exception ex){
+            throw new InvalidTokenInHeaderException("Invalid token : "+ token);
+        }
     }
 
     public String generateJwtToken(Authentication authentication) {

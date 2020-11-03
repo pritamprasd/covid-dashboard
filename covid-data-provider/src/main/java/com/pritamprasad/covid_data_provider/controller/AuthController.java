@@ -10,6 +10,7 @@ import com.pritamprasad.covid_data_provider.security.models.UserEntity;
 import com.pritamprasad.covid_data_provider.security.models.UserRole;
 import com.pritamprasad.covid_data_provider.security.repository.RoleRepository;
 import com.pritamprasad.covid_data_provider.security.repository.UserRepository;
+import com.pritamprasad.covid_data_provider.util.UserDefinedProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,9 @@ public class AuthController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDefinedProperties properties;
 
 
     @PostMapping("/signin")
@@ -96,6 +100,10 @@ public class AuthController {
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(roleRepository.findByRoleName(UserRole.USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        if(properties.getAdminSessionKey().equals(signUpRequest.getAdminKey())){
+            roles.add(roleRepository.findByRoleName(UserRole.ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found.")));
+        }
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully!");

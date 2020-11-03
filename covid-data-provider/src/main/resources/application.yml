@@ -16,7 +16,7 @@ covid19india:
   pastDataInNumberOfDays: 2
 auth:
   jwtSecret: covidDashboardSecretKeySample
-  jwtExpirationMs: 86400000
+  jwtExpirationMs: 300000
 ---
 spring:
   profiles:

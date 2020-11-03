@@ -68,5 +68,5 @@ JWTToken:
 
 ##### Notes:
 - Covid India: https://www.covid19india.org/ 
-- Saved calls for covid19india: https://www.getpostman.com/collections/2afb23eddb8accf94c3e
+- Saved calls for covid19india: https://www.getpostman.com/collections/2afb23eddb8accf94c3e (Import this json in postman)
 - 
