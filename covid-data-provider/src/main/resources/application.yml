@@ -12,7 +12,7 @@ covid19india:
     latestLog: https://api.covid19india.org/updatelog/log.json
     datewiseSummary: https://api.covid19india.org/v4/min/data-YYYY-MM-DD.min.json
   fixedDelay: 86400000   #in millis
-  timeTravelMinusDays: 3
+  timeTravelMinusDays: 4
   pastDataInNumberOfDays: 2
 auth:
   jwtSecret: covidDashboardSecretKeySample

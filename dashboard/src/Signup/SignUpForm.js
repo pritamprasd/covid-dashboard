@@ -15,7 +15,7 @@ function SignUpForm(props) {
         <input className='signUpRow' type="password" placeholder="password" onChange={e => { setPassword(e.target.value) }} />
         <input className='signUpRow' type="repassword" placeholder="repassword" onChange={e => { setRepassword(e.target.value) }} />
         <input className='signUpRow' type='checkbox' placeholder="checkbox" onChange={e => { setAcceptedTerms(e.target.value) }} />
-        <button type='button' onClick={e => handleSignup(email, password, repassword, acceptedTerms)}>"SignUp"</button>
+        <button type='button' onClick={e => handleSignup(email, password, repassword, acceptedTerms)}>SignUp</button>
       </form>
     </div>
   );
@@ -31,11 +31,12 @@ function handleSignup(email, password, repassword, acceptedTerms) {
   INTERNAL_API.post(`auth/signup`, requestBody).then(res => {
     if (res.status === 200) {
       alert("Signup success")
-    } else {
-      alert("Signup failed: " + res.data)
     }
   }).catch(
-    err => console.error("auth/signup api call failed. "+ err)
+    err => {      
+      console.error("auth/signup api call failed. " + JSON.stringify(err.response.data).data)
+      alert("Signup failed: "+ err.response.data)
+    }
   )
 }
 
