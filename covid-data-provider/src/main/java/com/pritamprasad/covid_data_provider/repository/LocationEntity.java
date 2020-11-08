@@ -15,7 +15,7 @@ public class LocationEntity {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(unique = true)
     private String name;
@@ -24,7 +24,7 @@ public class LocationEntity {
 
     private Long population;
 
-    private int parentId = 0;
+    private Long parentId = 0L;
 
     private EntityType type;
 

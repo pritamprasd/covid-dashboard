@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public abstract class BaseResponse {
 
-    private int id;
+    private long id;
     private String name;
     private List<Counts> counts;
     @Setter

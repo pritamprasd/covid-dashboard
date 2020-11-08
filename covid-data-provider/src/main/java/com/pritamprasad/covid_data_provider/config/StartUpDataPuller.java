@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -45,24 +47,37 @@ public class StartUpDataPuller implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         LocalDate today = LocalDate.now();
-        for(int i =0; i<properties.getPastDataInNumberOfDays() ; i++){
-            final LocalDate now = today.minusDays(properties.getTimeTravelMinusDays() + i);
-            // Add country Data handling here, for now only India, will need a new api
-            DatewiseIndiaCovidApiResponse summary = covid19IndiaApiHandler.getSummaryForDate(now);
-            updateDatabase(summary);
+        Page<MetaDataEntity> latestOverallMetaData = metadataRepository.findLatestOverallMetaData(PageRequest.of(0, 1));
+        if (latestOverallMetaData.getContent().isEmpty()) {
+            // No data in database : first time inserting data
+            logger.debug("Database Empty, pulling data for first time");
+            for (int i = 0; i < properties.getPastDataInNumberOfDays(); i++) {
+                final LocalDate now = today.minusDays(properties.getTimeTravelMinusDays() + i);
+                logger.debug("Pulling data for date : " + now);
+                DatewiseIndiaCovidApiResponse summary = covid19IndiaApiHandler.getSummaryForDate(now);
+                updateDatabase(summary);
+            }
+        } else {
+            // Check existing data , and then update what is needed
+            LocalDate dataAvailableTillDate = latestOverallMetaData.getContent().get(0).getCreatedDate();
+            for (int i = 0; i < properties.getPastDataInNumberOfDays(); i++) {
+                final LocalDate now = today.minusDays(properties.getTimeTravelMinusDays() + i);
+                if (now.isEqual(dataAvailableTillDate)) {
+                    logger.debug("Data already available till date : " + dataAvailableTillDate);
+                    break;
+                }
+                logger.debug("Pulling data for date : " + now);
+                DatewiseIndiaCovidApiResponse summary = covid19IndiaApiHandler.getSummaryForDate(now);
+                updateDatabase(summary);
+            }
         }
     }
 
     private void updateDatabase(DatewiseIndiaCovidApiResponse summary) {
-        /**
-         * TODO: use timestamp in long to save metadata
-         *
-         */
-//        Optional<LocationEntity> savedCountry = entityRepository.findByName("state.getKey()");
-        for(Map.Entry<String, DatewiseIndiaCovidApiResponse.State> state : summary.getStateMap().entrySet()){
-            int currentStateId;
+        for (Map.Entry<String, DatewiseIndiaCovidApiResponse.State> state : summary.getStateMap().entrySet()) {
+            long currentStateId;
             Optional<LocationEntity> savedState = entityRepository.findByName(state.getKey());
-            if(savedState.isPresent()){
+            if (savedState.isPresent()) {
                 currentStateId = savedState.get().getId();
             } else {
                 logger.debug("Creating new State Entity..");
@@ -85,10 +100,10 @@ public class StartUpDataPuller implements ApplicationRunner {
             metadataRepository.save(stateMetadataEntity);
 
             for (Map.Entry<String, DatewiseIndiaCovidApiResponse.Districts> district :
-                    Optional.ofNullable(state.getValue().getDistricts()).orElse(Collections.emptyMap()).entrySet()){
-                int currentDistrictId;
+                    Optional.ofNullable(state.getValue().getDistricts()).orElse(Collections.emptyMap()).entrySet()) {
+                long currentDistrictId;
                 Optional<LocationEntity> savedDistrict = entityRepository.findByName(district.getKey());
-                if(savedDistrict.isPresent()){
+                if (savedDistrict.isPresent()) {
                     currentDistrictId = savedDistrict.get().getId();
                 } else {
                     logger.debug("Creating new District Entity..");
@@ -103,10 +118,10 @@ public class StartUpDataPuller implements ApplicationRunner {
                 }
 
                 MetaDataEntity districtMetaDataEntity = new MetaDataEntity();
-                districtMetaDataEntity.setConfirmed(state.getValue().getTotal().getConfirmed());
-                districtMetaDataEntity.setDeceased(state.getValue().getTotal().getDeceased());
-                districtMetaDataEntity.setRecovered(state.getValue().getTotal().getRecovered());
-                districtMetaDataEntity.setTested(state.getValue().getTotal().getTested());
+                districtMetaDataEntity.setConfirmed(district.getValue().getTotal().getConfirmed());
+                districtMetaDataEntity.setDeceased(district.getValue().getTotal().getDeceased());
+                districtMetaDataEntity.setRecovered(district.getValue().getTotal().getRecovered());
+                districtMetaDataEntity.setTested(district.getValue().getTotal().getTested());
                 districtMetaDataEntity.setEntityId(currentDistrictId);
                 districtMetaDataEntity.setCreatedDate(summary.getDateStamp());
                 metadataRepository.save(districtMetaDataEntity);

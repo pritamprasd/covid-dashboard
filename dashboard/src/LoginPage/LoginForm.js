@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Button, TextField, Grid, Typography, Divider } from '@material-ui/core';
 import store from '../storage/store';
 
-
+store.subscribe((state) => { console.log(state)})
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -13,7 +13,6 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [displayLogin, setDisplayLogin] = useState(true);
   const history = useHistory();
-
 
   const showSignupPage = (e) => {
     setDisplayLogin(false)
@@ -51,7 +50,8 @@ function LoginForm() {
     INTERNAL_API.post(`auth/signin`, requestBody).then(res => {
       if (res.status === 200) {
         const jwtString = res.data.jwt;
-        store.dispatch({ type: 'jwt', token:jwtString })               
+        console.log("JWT: "+ jwtString)
+        store.dispatch({ type: 'jwt', token: jwtString })               
         history.push("/home")
       }
     }).catch(

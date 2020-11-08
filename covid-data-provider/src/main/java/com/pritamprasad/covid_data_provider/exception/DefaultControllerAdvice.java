@@ -1,4 +1,4 @@
-package com.pritamprasad.covid_data_provider.config;
+package com.pritamprasad.covid_data_provider.exception;
 
 import com.pritamprasad.covid_data_provider.exception.BadRequestException;
 import com.pritamprasad.covid_data_provider.exception.CovidDataProviderException;
@@ -26,6 +26,13 @@ public class DefaultControllerAdvice extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(ex.toString());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InternalErrorException.class)
+    public ResponseEntity<ErrorResponse> handleInternalErrorException(InternalErrorException ex, WebRequest request){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(ex.toString());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**

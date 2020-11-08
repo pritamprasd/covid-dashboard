@@ -24,7 +24,7 @@ public class MetaDataEntity {
     private Long recovered;
     private Long tested;
 
-    private int entityId;
+    private Long entityId;
 
     private LocalDate createdDate;
 }

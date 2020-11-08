@@ -7,14 +7,14 @@ logging:
     com.pritamprasad: TRACE
     org:
       springframework:
-        security: DEBUG
+        security: ERROR
 covid19india:
   url:
     latestLog: https://api.covid19india.org/updatelog/log.json
     datewiseSummary: https://api.covid19india.org/v4/min/data-YYYY-MM-DD.min.json
   fixedDelay: 86400000   #in millis
   timeTravelMinusDays: 2
-  pastDataInNumberOfDays: 2
+  pastDataInNumberOfDays: 3
 auth:
   jwtSecret: covidDashboardSecretKeySample
   jwtExpirationMs: 300000

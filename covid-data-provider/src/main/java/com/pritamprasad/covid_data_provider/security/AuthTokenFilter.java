@@ -33,7 +33,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-
     /**
      * We're anyways going to use {@link org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter}
      * to authenticate login details, but in order to make UsernamePasswordAuthenticationFilter understand user/pass

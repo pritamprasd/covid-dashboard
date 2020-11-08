@@ -7,12 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.pritamprasad.covid_data_provider.util.Helper.normalizeDate;
 
 @RestController
 public class StateDataController {
@@ -33,16 +34,20 @@ public class StateDataController {
         this.stateHandlerService = stateHandlerService;
     }
 
+    @CrossOrigin("*")
     @GetMapping("/state")
     public ResponseEntity<List<StateResponse>> getAllStates() {
+        logger.debug("/state called..");
         List<StateResponse> states = stateHandlerService.getAllStates();
         return new ResponseEntity<>(states, HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/state/{code}")
-    public ResponseEntity<StateResponse> getStatesByCode(@PathVariable("code") String code) {
-        StateResponse states = stateHandlerService.getStateByCode(code);
+    @GetMapping("/state/{id}")
+    public ResponseEntity<StateResponse> getStatesByCode(@PathVariable("id") long stateId, @RequestParam("date") String date) {
+        logger.debug("/state/{} called.. date: {}", stateId, date);
+        final LocalDate localDate = LocalDate.parse(normalizeDate(date));
+        StateResponse states = stateHandlerService.getStateById(stateId, localDate);
         return new ResponseEntity<>(states, HttpStatus.OK);
     }
 }

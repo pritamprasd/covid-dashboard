@@ -45,28 +45,11 @@ function Home(props) {
         history.push("/login")
     }
 
-    useEffect(() => {
-        let token = store.getState().auth.token;
-        //   console.log("Home token: "+ token)
-        if (token === '') {
-            history.push("/login")
-        }
-        INTERNAL_API.post(`auth/validate`, token).then(res => {
-            if (res.status === 200) {
-                console.log("Cached token not expired, using old token")
-            }
-        }).catch(
-            err => {
-                console.error("token from storage not valid, login again " + err)
-                history.push("/login")
-            }
-        )
-    })
     return (
         <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" className="title" onClick={showDashBoard}> Dashboard </Typography>
+            <AppBar position="static" >
+                <Toolbar className="appbar">
+                    <Typography variant="h6" className="title" onClick={showDashBoard}> Covid Dashboard </Typography>
                     <div>
                         <IconButton aria-label="account of current user" aria-controls="menu-appbar"
                             aria-haspopup="true" onClick={handleMenu} color="inherit" >
