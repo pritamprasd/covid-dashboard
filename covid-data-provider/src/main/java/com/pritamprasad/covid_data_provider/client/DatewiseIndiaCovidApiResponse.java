@@ -17,12 +17,6 @@ public class DatewiseIndiaCovidApiResponse {
     @Setter
     private LocalDate dateStamp;
 
-
-//    private Map<String, State> stateMap;
-//    public Map<String, State> getStateMap(){
-//        return stateMap == null ? new HashMap<>() : stateMap;
-//    }
-
     @Getter
     public static class State {
         @SerializedName("delta")

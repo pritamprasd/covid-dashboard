@@ -1,0 +1,11 @@
+.root{
+    flex-grow: 1;
+}
+
+#topPadding{
+    height: 100px;
+}
+
+.divider{
+    color:black;
+}

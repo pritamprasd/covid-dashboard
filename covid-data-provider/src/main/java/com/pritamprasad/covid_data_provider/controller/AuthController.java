@@ -12,7 +12,6 @@ import com.pritamprasad.covid_data_provider.security.repository.RoleRepository;
 import com.pritamprasad.covid_data_provider.security.repository.UserRepository;
 import com.pritamprasad.covid_data_provider.util.UserDefinedProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +26,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.pritamprasad.covid_data_provider.util.Validations.validateSigninRequest;
+import static com.pritamprasad.covid_data_provider.util.Validations.validateSignupRequest;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -56,7 +58,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-
+        validateSigninRequest(loginRequest);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(), loginRequest.getPassword()));
@@ -81,6 +83,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
+        validateSignupRequest(signUpRequest);
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -107,5 +110,10 @@ public class AuthController {
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok("User registered successfully!");
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> validateToken(@RequestBody String token){
+        return jwtUtils.isValidJwt(token) ? ResponseEntity.ok("Valid Token") : ResponseEntity.status(401).body("Unauthorized!");
     }
 }

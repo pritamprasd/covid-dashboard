@@ -12,7 +12,7 @@ A sample dashboard to be build using reactjs/Spring boot
     - mandatory: username/email and password.
 3. After login in User can view dashboard
 4. After login in User can view profile page.
-    - future: User can update user-props
+    - future: User can update user-props like default_state, so that 
 5. After login User can logout
 6. future: Admin dashboard
     - for root Admin: to manage/add new admins/moderators

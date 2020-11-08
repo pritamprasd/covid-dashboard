@@ -21,13 +21,18 @@ import java.io.IOException;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
     private UserDetailsService userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+
+    @Autowired
+    public AuthTokenFilter(final JwtUtils jwtUtils, final UserDetailsService userDetailsService) {
+        this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
+    }
+
 
     /**
      * We're anyways going to use {@link org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter}
@@ -40,7 +45,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                                     final FilterChain filterChain) throws ServletException, IOException {
         try {
             final String jwt = parseJwt(request);
-            if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+            if (jwt != null && jwtUtils.isValidJwt(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

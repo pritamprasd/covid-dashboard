@@ -2,6 +2,7 @@ package com.pritamprasad.covid_data_provider.service;
 
 import com.pritamprasad.covid_data_provider.exception.EntityNotFoundException;
 import com.pritamprasad.covid_data_provider.models.BaseResponse.Counts;
+import com.pritamprasad.covid_data_provider.models.EntityType;
 import com.pritamprasad.covid_data_provider.models.StateResponse;
 import com.pritamprasad.covid_data_provider.repository.EntityRepository;
 import com.pritamprasad.covid_data_provider.repository.LocationEntity;
@@ -26,8 +27,17 @@ public class StateHandlerService {
 
     public List<StateResponse> getAllStates() {
         List<LocationEntity> entities =
-                entityRepository.findAll().stream().filter(l -> l.getStateId() == 0).collect(Collectors.toList());
+                entityRepository.findAll().stream().filter(l -> l.getType() == EntityType.STATE).collect(Collectors.toList());
         return entities.stream().map(this::getStateResponseFromLocationEntity).collect(Collectors.toList());
+    }
+
+    public StateResponse getStateByCode(String code) {
+        Optional<LocationEntity> entity = entityRepository.findByCode(code);
+        if(entity.isPresent()){
+            return getStateResponseFromLocationEntity(entity.get());
+        } else{
+            throw new EntityNotFoundException(String.format("Entity code: %s", code));
+        }
     }
 
     private StateResponse getStateResponseFromLocationEntity(final LocationEntity state) {
@@ -40,21 +50,12 @@ public class StateHandlerService {
     }
 
     private Counts getCountFromMeta(final MetaDataEntity m) {
-       final Counts counts = new Counts();
+        final Counts counts = new Counts();
         counts.setConfirmed(m.getConfirmed());
         counts.setDeceased(m.getDeceased());
         counts.setRecovered(m.getRecovered());
         counts.setTested(m.getTested());
         counts.setDate(m.getCreatedDate());
         return counts;
-    }
-
-    public StateResponse getStateByCode(String code) {
-        Optional<LocationEntity> entity = entityRepository.findByCode(code);
-        if(entity.isPresent()){
-            return getStateResponseFromLocationEntity(entity.get());
-        } else{
-            throw new EntityNotFoundException(String.format("Entity code: %s", code));
-        }
     }
 }

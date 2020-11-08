@@ -16,7 +16,7 @@ public class TokenDecoder {
         this.jwtUtils = jwtUtils;
     }
 
-    @PostMapping("/auth/token")
+    @PostMapping("/token")
     public ResponseEntity<String> decodeToken(@RequestBody String token){
         return new ResponseEntity<>(jwtUtils.decodeToken(token), HttpStatus.OK);
     }

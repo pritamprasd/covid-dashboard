@@ -55,7 +55,7 @@ public class Covid19IndiaApiHandler {
         ResponseEntity<String> responseEntity = null;
         try {
             responseEntity = restTemplate.getForEntity(
-                    constructUrl(valueOf(date.getYear()), valueOf(date.getMonthValue()), valueOf(date.getDayOfMonth())),
+                    constructUrl(date.getYear(), date.getMonthValue(), date.getDayOfMonth()),
                     String.class);
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 apiResponse = parseResponseForSummaryDataByDate(responseEntity.getBody());
@@ -80,11 +80,13 @@ public class Covid19IndiaApiHandler {
         return apiResponse;
     }
 
-    private URI constructUrl(@NonNull String year, @NonNull String month, @NonNull String date) throws URISyntaxException {
-        String uriString = properties.getDatewiseSummaryUrl()
-                .replace("YYYY", year)
-                .replace("MM", month)
-                .replace("DD", date);
+    private URI constructUrl(@NonNull int year, @NonNull int month, @NonNull int date) throws URISyntaxException {
+        final String normalizedMonth = valueOf(month).length() == 1 ? "0"+ month : valueOf(month);
+        final String normalizedDay= valueOf(date).length() == 1 ? "0"+ date : valueOf(date);
+        final String uriString = properties.getDatewiseSummaryUrl()
+                .replace("YYYY", valueOf(year))
+                .replace("MM", normalizedMonth)
+                .replace("DD", normalizedDay);
         logger.debug("Constructed uri : {}", uriString);
         return new URI(uriString);
     }

@@ -1,5 +1,6 @@
 package com.pritamprasad.covid_data_provider.config;
 
+import com.pritamprasad.covid_data_provider.exception.BadRequestException;
 import com.pritamprasad.covid_data_provider.exception.CovidDataProviderException;
 import com.pritamprasad.covid_data_provider.exception.EntityNotFoundException;
 import com.pritamprasad.covid_data_provider.models.ErrorResponse;
@@ -18,6 +19,13 @@ public class DefaultControllerAdvice extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage(ex.toString());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException ex, WebRequest request){
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(ex.toString());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     /**

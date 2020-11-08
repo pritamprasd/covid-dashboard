@@ -4,6 +4,6 @@
 - signout button to clear jwt from ls
 
 #### Done:
-- sign up: http://localhost:3000/signup
 - login: http://localhost:3000/login
+- home: http://localhost:3000/home
 

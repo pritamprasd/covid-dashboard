@@ -1,5 +1,6 @@
 server:
   port: 8080
+  address: 192.168.56.1
 logging:
   level:
     root: INFO
@@ -12,7 +13,7 @@ covid19india:
     latestLog: https://api.covid19india.org/updatelog/log.json
     datewiseSummary: https://api.covid19india.org/v4/min/data-YYYY-MM-DD.min.json
   fixedDelay: 86400000   #in millis
-  timeTravelMinusDays: 4
+  timeTravelMinusDays: 2
   pastDataInNumberOfDays: 2
 auth:
   jwtSecret: covidDashboardSecretKeySample

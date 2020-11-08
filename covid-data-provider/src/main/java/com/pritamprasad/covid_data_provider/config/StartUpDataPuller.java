@@ -2,6 +2,7 @@ package com.pritamprasad.covid_data_provider.config;
 
 import com.pritamprasad.covid_data_provider.client.Covid19IndiaApiHandler;
 import com.pritamprasad.covid_data_provider.client.DatewiseIndiaCovidApiResponse;
+import com.pritamprasad.covid_data_provider.models.EntityType;
 import com.pritamprasad.covid_data_provider.repository.LocationEntity;
 import com.pritamprasad.covid_data_provider.repository.MetaDataEntity;
 import com.pritamprasad.covid_data_provider.repository.EntityRepository;
@@ -46,6 +47,7 @@ public class StartUpDataPuller implements ApplicationRunner {
         LocalDate today = LocalDate.now();
         for(int i =0; i<properties.getPastDataInNumberOfDays() ; i++){
             final LocalDate now = today.minusDays(properties.getTimeTravelMinusDays() + i);
+            // Add country Data handling here, for now only India, will need a new api
             DatewiseIndiaCovidApiResponse summary = covid19IndiaApiHandler.getSummaryForDate(now);
             updateDatabase(summary);
         }
@@ -53,10 +55,11 @@ public class StartUpDataPuller implements ApplicationRunner {
 
     private void updateDatabase(DatewiseIndiaCovidApiResponse summary) {
         /**
-         * use timestamp in long to save metadata
+         * TODO: use timestamp in long to save metadata
+         *
          */
+//        Optional<LocationEntity> savedCountry = entityRepository.findByName("state.getKey()");
         for(Map.Entry<String, DatewiseIndiaCovidApiResponse.State> state : summary.getStateMap().entrySet()){
-
             int currentStateId;
             Optional<LocationEntity> savedState = entityRepository.findByName(state.getKey());
             if(savedState.isPresent()){
@@ -66,6 +69,7 @@ public class StartUpDataPuller implements ApplicationRunner {
                 LocationEntity stateEntity = new LocationEntity();
                 stateEntity.setName(state.getKey());
                 stateEntity.setCode(state.getKey());
+                stateEntity.setType(EntityType.STATE);
                 stateEntity.setPopulation(state.getValue().getMeta().getPopulation());
                 stateEntity.setCreatedDate(summary.getDateStamp());
                 currentStateId = entityRepository.save(stateEntity).getId();
@@ -92,7 +96,8 @@ public class StartUpDataPuller implements ApplicationRunner {
                     districtEntity.setName(district.getKey());
                     districtEntity.setCode(district.getKey());
                     districtEntity.setPopulation(Optional.ofNullable(district.getValue().getMeta()).orElse(new DatewiseIndiaCovidApiResponse.Meta()).getPopulation());
-                    districtEntity.setStateId(currentStateId);
+                    districtEntity.setParentId(currentStateId);
+                    districtEntity.setType(EntityType.DISTRICT);
                     districtEntity.setCreatedDate(summary.getDateStamp());
                     currentDistrictId = entityRepository.save(districtEntity).getId();
                 }
