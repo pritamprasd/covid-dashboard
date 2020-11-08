@@ -7,8 +7,8 @@ import com.pritamprasad.covid_data_provider.repository.EntityRepository;
 import com.pritamprasad.covid_data_provider.repository.LocationEntity;
 import com.pritamprasad.covid_data_provider.repository.MetaDataEntity;
 import com.pritamprasad.covid_data_provider.repository.MetadataRepository;
+import com.pritamprasad.covid_data_provider.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,15 +35,15 @@ public class DistrictHandlerService {
     public List<DistrictResponse> getAllDistrictByState(long stateId) {
         List<LocationEntity> entities = entityRepository.findAllEntityByParentId(stateId);
         return entities.stream()
-                .map(district -> getDistrictResponseFromLocationEntity(district,stateId))
+                .map(district -> getDistrictResponseFromLocationEntity(district, stateId))
                 .collect(Collectors.toList());
     }
 
     public DistrictResponse getDistrictById(long id, LocalDate date) {
         Optional<LocationEntity> entity = entityRepository.findById(id);
-        if(entity.isPresent()){
-            return getDistrictResponseWithLatestMetadataFromLocationEntity(entity.get(),date);
-        } else{
+        if (entity.isPresent()) {
+            return getDistrictResponseWithLatestMetadataFromLocationEntity(entity.get(), date);
+        } else {
             throw new EntityNotFoundException(String.format("Entity id: %s", id));
         }
     }
@@ -63,9 +63,31 @@ public class DistrictHandlerService {
         response.setId(district.getId());
         List<Counts> countsList = new ArrayList<>();
         Optional<MetaDataEntity> latestMetaByEntityId =
-                metadataRepository.findLatestMetaByEntityId(district.getId(), date);
+                metadataRepository.findMetaByEntityIdOnDate(district.getId(), date);
         latestMetaByEntityId.ifPresent(metaDataEntity -> countsList.add(getCountFromMeta(metaDataEntity)));
         response.setCounts(countsList);
+        return response;
+    }
+
+    public DistrictResponse getStateDataInBetween(long stateId, LocalDate startDate, LocalDate endDate) {
+        DistrictResponse response;
+        Optional<LocationEntity> entity = entityRepository.findById(stateId);
+        if (entity.isPresent()) {
+            response = getDistrictResponseFromLocationEntity(entity.get());
+            List<MetaDataEntity> allByIdBetweenDates = metadataRepository.findAllByIdBetweenDates(stateId, startDate, endDate);
+            List<Counts> counts = allByIdBetweenDates.stream().map(meta -> getCountFromMeta(meta)).collect(Collectors.toList());
+            response.setCounts(counts);
+        } else {
+            throw new EntityNotFoundException(String.format(Messages.STATE_NOT_FOUND_MSG, stateId));
+        }
+        return response;
+    }
+
+    private DistrictResponse getDistrictResponseFromLocationEntity(final LocationEntity state) {
+        final DistrictResponse response = new DistrictResponse();
+        response.setName(state.getName());
+        response.setStateId(state.getParentId());
+        response.setId(state.getId());
         return response;
     }
 }

@@ -20,6 +20,8 @@ function DashboardContainer() {
   const [recovered, setRecovered] = useState(0);
   const [tested, setTested] = useState(0);
 
+  const [entityDetailedData, setEntityDetailedData] = useState({});
+
   const [allStates, setAllStates] = useState([]);
   const [allDistricts, setAllDistricts] = useState([]);
   const [selectedState, setSelectedState] = useState(0);
@@ -63,7 +65,7 @@ function DashboardContainer() {
     }
     INTERNAL_API.get('/state/', config).then(res => {
       if (res.status === 200) {
-        console.log("GET state: " + res.data)
+        console.log("GET state: " + JSON.stringify(res.data))
         let localAllState = []
         res.data.map(state => localAllState.push(state))
         setAllStates(localAllState)
@@ -104,7 +106,7 @@ function DashboardContainer() {
     }
     INTERNAL_API.get('/district/?stateid=' + event.target.value, config).then(res => {
       if (res.status === 200) {
-        console.log("GET district: " + JSON.stringify(res.data))
+        console.log("GET district names: " + JSON.stringify(res.data))
         let localAllDistrict = []
         res.data.map(district => localAllDistrict.push(district))
         setAllDistricts(localAllDistrict)
@@ -117,11 +119,23 @@ function DashboardContainer() {
     )
     INTERNAL_API.get('/state/' + event.target.value + "?date=" + selectedDate, config).then(res => {
       if (res.status === 200) {
-        console.log("GET state: " + res.data)
+        console.log("GET state: " + JSON.stringify(res.data))
         setConfirmed(res.data.counts[0].confirmed || 0)
         setDeceased(res.data.counts[0].deceased || 0)
         setRecovered(res.data.counts[0].recovered || 0)
         setTested(res.data.counts[0].tested || 0)
+      }
+    }).catch(
+      err => {
+        console.error("GET state data call failed, retry again" + err)
+        history.push("/login")
+      }
+    )
+    INTERNAL_API.get('/state/' + event.target.value + "/" + normalizeDate(minDate)+ "/" + normalizeDate(maxDate), config)
+    .then(res => {
+      if (res.status === 200) {
+        console.log("GET state detailed: " + JSON.stringify(res.data))
+        setEntityDetailedData(res.data)      
       }
     }).catch(
       err => {
@@ -157,12 +171,27 @@ function DashboardContainer() {
         history.push("/login")
       }
     )
+    INTERNAL_API.get('/district/' + event.target.value + "/" + normalizeDate(minDate)+ "/" + normalizeDate(maxDate), config)
+    .then(res => {
+      if (res.status === 200) {
+        console.log("GET district detailed: " + JSON.stringify(res.data))
+        setEntityDetailedData(res.data)      
+      }
+    }).catch(
+      err => {
+        console.error("GET district data call failed, retry again" + err)
+        history.push("/login")
+      }
+    )
   }
 
   const handleDateChange = (date) => {
-    const convertedDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + (date.getDate())
-    console.log("Updating current date to :" + convertedDate)
-    setSelectedDate(convertedDate)
+    console.log("Updating current date to :" + normalizeDate(date))
+    setSelectedDate(normalizeDate(date))
+  }
+
+  const normalizeDate = (date) => {
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + (date.getDate())
   }
 
   return (
@@ -211,8 +240,8 @@ function DashboardContainer() {
             <InfoTile data={testedTileData} />
           </Grid>
         </Grid>
-        <Grid item>
-          <DatewiseGraph />
+        <Grid container item justify="space-evenly"> 
+          <DatewiseGraph entity={entityDetailedData}/>
         </Grid>
       </Grid>
     </div >

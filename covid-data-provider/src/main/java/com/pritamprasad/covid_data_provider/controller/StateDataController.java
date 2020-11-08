@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.pritamprasad.covid_data_provider.util.Helper.normalizeDate;
@@ -47,7 +46,19 @@ public class StateDataController {
     public ResponseEntity<StateResponse> getStatesByCode(@PathVariable("id") long stateId, @RequestParam("date") String date) {
         logger.debug("/state/{} called.. date: {}", stateId, date);
         final LocalDate localDate = LocalDate.parse(normalizeDate(date));
-        StateResponse states = stateHandlerService.getStateById(stateId, localDate);
-        return new ResponseEntity<>(states, HttpStatus.OK);
+        StateResponse state = stateHandlerService.getStateById(stateId, localDate);
+        return new ResponseEntity<>(state, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/state/{id}/{start}/{end}")
+    public ResponseEntity<StateResponse> getStatesByCode(@PathVariable("id") long stateId,
+                                                         @PathVariable("start") String start,
+                                                         @PathVariable("end") String end) {
+        logger.debug("/state/{} called.. start: {}, end: {}", stateId, start, end);
+        final LocalDate startDate = LocalDate.parse(normalizeDate(start));
+        final LocalDate endDate = LocalDate.parse(normalizeDate(end));
+        StateResponse state = stateHandlerService.getStateDataInBetween(stateId, startDate, endDate);
+        return new ResponseEntity<>(state, HttpStatus.OK);
     }
 }

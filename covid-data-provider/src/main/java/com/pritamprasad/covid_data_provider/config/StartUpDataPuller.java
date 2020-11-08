@@ -2,6 +2,7 @@ package com.pritamprasad.covid_data_provider.config;
 
 import com.pritamprasad.covid_data_provider.client.Covid19IndiaApiHandler;
 import com.pritamprasad.covid_data_provider.client.DatewiseIndiaCovidApiResponse;
+import com.pritamprasad.covid_data_provider.client.DatewiseIndiaCovidApiResponse.Districts;
 import com.pritamprasad.covid_data_provider.models.EntityType;
 import com.pritamprasad.covid_data_provider.repository.LocationEntity;
 import com.pritamprasad.covid_data_provider.repository.MetaDataEntity;
@@ -80,7 +81,7 @@ public class StartUpDataPuller implements ApplicationRunner {
             if (savedState.isPresent()) {
                 currentStateId = savedState.get().getId();
             } else {
-                logger.debug("Creating new State Entity..");
+                logger.debug("Creating new State Entity.. {}", state.toString());
                 LocationEntity stateEntity = new LocationEntity();
                 stateEntity.setName(state.getKey());
                 stateEntity.setCode(state.getKey());
@@ -99,14 +100,14 @@ public class StartUpDataPuller implements ApplicationRunner {
             stateMetadataEntity.setCreatedDate(summary.getDateStamp());
             metadataRepository.save(stateMetadataEntity);
 
-            for (Map.Entry<String, DatewiseIndiaCovidApiResponse.Districts> district :
+            for (Map.Entry<String, Districts> district :
                     Optional.ofNullable(state.getValue().getDistricts()).orElse(Collections.emptyMap()).entrySet()) {
                 long currentDistrictId;
                 Optional<LocationEntity> savedDistrict = entityRepository.findByName(district.getKey());
                 if (savedDistrict.isPresent()) {
                     currentDistrictId = savedDistrict.get().getId();
                 } else {
-                    logger.debug("Creating new District Entity..");
+                    logger.debug("Creating new District Entity.. {}",district.toString());
                     LocationEntity districtEntity = new LocationEntity();
                     districtEntity.setName(district.getKey());
                     districtEntity.setCode(district.getKey());
@@ -118,10 +119,12 @@ public class StartUpDataPuller implements ApplicationRunner {
                 }
 
                 MetaDataEntity districtMetaDataEntity = new MetaDataEntity();
-                districtMetaDataEntity.setConfirmed(district.getValue().getTotal().getConfirmed());
-                districtMetaDataEntity.setDeceased(district.getValue().getTotal().getDeceased());
-                districtMetaDataEntity.setRecovered(district.getValue().getTotal().getRecovered());
-                districtMetaDataEntity.setTested(district.getValue().getTotal().getTested());
+                if(district.getValue().getTotal() != null){
+                    districtMetaDataEntity.setConfirmed(district.getValue().getTotal().getConfirmed());
+                    districtMetaDataEntity.setDeceased(district.getValue().getTotal().getDeceased());
+                    districtMetaDataEntity.setRecovered(district.getValue().getTotal().getRecovered());
+                    districtMetaDataEntity.setTested(district.getValue().getTotal().getTested());
+                }
                 districtMetaDataEntity.setEntityId(currentDistrictId);
                 districtMetaDataEntity.setCreatedDate(summary.getDateStamp());
                 metadataRepository.save(districtMetaDataEntity);

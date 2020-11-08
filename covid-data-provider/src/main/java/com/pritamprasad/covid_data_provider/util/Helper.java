@@ -5,14 +5,15 @@ import com.pritamprasad.covid_data_provider.models.BaseResponse.Counts;
 import com.pritamprasad.covid_data_provider.repository.MetaDataEntity;
 
 public class Helper {
-    private Helper(){}
+    private Helper() {
+    }
 
     public static Counts getCountFromMeta(final MetaDataEntity m) {
         final Counts counts = new Counts();
-        counts.setConfirmed(m.getConfirmed());
-        counts.setDeceased(m.getDeceased());
-        counts.setRecovered(m.getRecovered());
-        counts.setTested(m.getTested());
+        counts.setConfirmed(m.getConfirmed() == null ? 0 : m.getConfirmed());
+        counts.setDeceased(m.getDeceased() == null ? 0 : m.getDeceased());
+        counts.setRecovered(m.getRecovered() == null ? 0 : m.getRecovered());
+        counts.setTested(m.getTested() == null ? 0 : m.getTested());
         counts.setDate(m.getCreatedDate());
         return counts;
     }
@@ -21,6 +22,6 @@ public class Helper {
         String[] split = date.split("-");
         final int dateIndex = split.length - 1;
         split[dateIndex] = split[dateIndex].length() == 1 ? "0" + split[dateIndex] : split[dateIndex];
-        return String.join( "-",split);
+        return String.join("-", split);
     }
 }

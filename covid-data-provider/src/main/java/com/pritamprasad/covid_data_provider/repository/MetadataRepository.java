@@ -16,7 +16,7 @@ public interface MetadataRepository extends JpaRepository<MetaDataEntity, Long> 
     List<MetaDataEntity> findAllMetaByEntityId(int entityId);
 
     @Query("Select m From MetaDataEntity m Where m.entityId = ?1 and m.createdDate = ?2")
-    Optional<MetaDataEntity> findLatestMetaByEntityId(Long entityId, LocalDate date);
+    Optional<MetaDataEntity> findMetaByEntityIdOnDate(Long entityId, LocalDate date);
 
     @Query("Select m From MetaDataEntity m Order by m.createdDate desc")
     Page<MetaDataEntity> findLatestOverallMetaData(Pageable pageable);
@@ -24,5 +24,7 @@ public interface MetadataRepository extends JpaRepository<MetaDataEntity, Long> 
     @Query("Select m From MetaDataEntity m Order by m.createdDate asc")
     Page<MetaDataEntity> findOldestOverallMetaData(Pageable pageable);
 
+    @Query("Select m From MetaDataEntity m Where m.entityId = ?1 and m.createdDate between ?2 and ?3 Order by m.createdDate desc")
+    List<MetaDataEntity> findAllByIdBetweenDates(Long entityId, LocalDate start, LocalDate end);
 
 }

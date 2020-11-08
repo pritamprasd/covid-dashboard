@@ -8,8 +8,8 @@ import com.pritamprasad.covid_data_provider.repository.EntityRepository;
 import com.pritamprasad.covid_data_provider.repository.LocationEntity;
 import com.pritamprasad.covid_data_provider.repository.MetaDataEntity;
 import com.pritamprasad.covid_data_provider.repository.MetadataRepository;
+import com.pritamprasad.covid_data_provider.util.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,8 +45,22 @@ public class StateHandlerService {
         if(entity.isPresent()){
             return getStateResponseWithLatestMetadataFromLocationEntity(entity.get(),date);
         } else{
-            throw new EntityNotFoundException(String.format("Entity id: %s", id));
+            throw new EntityNotFoundException(String.format(Messages.STATE_NOT_FOUND_MSG, id));
         }
+    }
+
+    public StateResponse getStateDataInBetween(long stateId, LocalDate startDate, LocalDate endDate) {
+        StateResponse response;
+        Optional<LocationEntity> entity = entityRepository.findById(stateId);
+        if(entity.isPresent()){
+            response = getStateResponseFromLocationEntity(entity.get());
+            List<MetaDataEntity> allByIdBetweenDates = metadataRepository.findAllByIdBetweenDates(stateId, startDate, endDate);
+            List<Counts> counts = allByIdBetweenDates.stream().map(meta -> getCountFromMeta(meta)).collect(Collectors.toList());
+            response.setCounts(counts);
+        } else{
+            throw new EntityNotFoundException(String.format(Messages.STATE_NOT_FOUND_MSG, stateId));
+        }
+        return response;
     }
 
     private StateResponse getStateResponseFromLocationEntity(final LocationEntity state) {
@@ -64,7 +78,7 @@ public class StateHandlerService {
         response.setId(state.getId());
         List<Counts> countsList = new ArrayList<>();
         Optional<MetaDataEntity> latestMetaByEntityId =
-                metadataRepository.findLatestMetaByEntityId(state.getId(), date);
+                metadataRepository.findMetaByEntityIdOnDate(state.getId(), date);
         latestMetaByEntityId.ifPresent(metaDataEntity -> countsList.add(getCountFromMeta(metaDataEntity)));
         response.setCounts(countsList);
         return response;

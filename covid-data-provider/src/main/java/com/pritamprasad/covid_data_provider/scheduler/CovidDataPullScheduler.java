@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * Placeholder to update covid data when needed
+ * TODO: Placeholder to update covid data when needed
  */
 @Component
 public class CovidDataPullScheduler {
@@ -23,7 +23,6 @@ public class CovidDataPullScheduler {
     public CovidDataPullScheduler(Covid19IndiaApiHandler covid19IndiaApiHandler) {
         this.covid19IndiaApiHandler = covid19IndiaApiHandler;
     }
-
 
     //@Scheduled(fixedDelayString =  "${covid19india.fixedDelay}")
     public void refreshLogs() {

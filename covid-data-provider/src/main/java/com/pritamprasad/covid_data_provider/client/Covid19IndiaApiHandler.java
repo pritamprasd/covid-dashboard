@@ -43,13 +43,6 @@ public class Covid19IndiaApiHandler {
         return endpointResponses == null ? Collections.emptyList() : Arrays.asList(endpointResponses);
     }
 
-//    public static void main(String[] args) {
-//        UserDefinedProperties properties = new UserDefinedProperties();
-//        properties.setDatewiseSummaryUrl("https://api.covid19india.org/v4/min/data-YYYY-MM-DD.min.json");
-//        Covid19IndiaApiHandler handler = new Covid19IndiaApiHandler(new RestTemplateBuilder().build(), properties, new GsonBuilder().setPrettyPrinting().create());
-//        handler.getSummaryForDate(LocalDate.now().minusDays(1));
-//    }
-
     public DatewiseIndiaCovidApiResponse getSummaryForDate(final LocalDate date) {
         DatewiseIndiaCovidApiResponse apiResponse = new DatewiseIndiaCovidApiResponse();
         ResponseEntity<String> responseEntity = null;

@@ -38,9 +38,21 @@ public class DistrictDataController {
     @CrossOrigin(origins = "*")
     @GetMapping("/district/{id}")
     public ResponseEntity<DistrictResponse> getDistrictsByIdOnDate(@PathVariable("id") long districtId, @RequestParam("date") String date) {
-        logger.debug("/district/{} called.. date: {}",districtId,date);
+        logger.debug("/district/{} called.. date: {}", districtId, date);
         final LocalDate localDate = LocalDate.parse(normalizeDate(date));
-        DistrictResponse states = districtHandlerService.getDistrictById(districtId,localDate);
+        DistrictResponse states = districtHandlerService.getDistrictById(districtId, localDate);
         return new ResponseEntity<>(states, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/district/{id}/{start}/{end}")
+    public ResponseEntity<DistrictResponse> getStatesByCode(@PathVariable("id") long stateId,
+                                                            @PathVariable("start") String start,
+                                                            @PathVariable("end") String end) {
+        logger.debug("/district/{} called.. start: {}, end: {}", stateId, start, end);
+        final LocalDate startDate = LocalDate.parse(normalizeDate(start));
+        final LocalDate endDate = LocalDate.parse(normalizeDate(end));
+        DistrictResponse state = districtHandlerService.getStateDataInBetween(stateId, startDate, endDate);
+        return new ResponseEntity<>(state, HttpStatus.OK);
     }
 }
