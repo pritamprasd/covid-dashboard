@@ -9,39 +9,30 @@
 			"name": "GET All States",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4Njc5ODksImV4cCI6MTYwNDg2ODI4OX0.GVtNKQKsedismep72w1GEjYxwq_ozMHJdP06pWd4uekkgeJPWVFuSHzdcUPJ_uDosURorzbMWZSQW77tcmRQew",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/state/JK",
+					"raw": "http://192.168.56.1:8080/state/",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"192",
+						"168",
+						"56",
+						"1"
 					],
 					"port": "8080",
 					"path": [
 						"state",
-						"JK"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET all logs",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/logs",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"logs"
+						""
 					]
 				}
 			},
@@ -57,7 +48,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"pp2\",\r\n    \"password\": \"password\"\r\n}",
+					"raw": "{\r\n    \"username\": \"abc\",\r\n    \"password\": \"abc\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -65,10 +56,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/auth/signin",
+					"raw": "http://192.168.56.1:8080/auth/signin",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"192",
+						"168",
+						"56",
+						"1"
 					],
 					"port": "8080",
 					"path": [
@@ -86,7 +80,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"pp2\",\r\n    \"email\": \"mail34@pritamprasad.com\",\r\n    \"password\": \"password\"\r\n}",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"adminPass\",\r\n    \"adminKey\": \"4c3e2c9e-1e99-4a07-90b7-d628d7e2a6bed4896bea-7ce3-4099-b2ad-838db465a11e6e7a5ef2-0a55-418e-a276-a95193b42e55\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -94,10 +88,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/auth/signup",
+					"raw": "http://192.168.56.1:8080/auth/signup",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"192",
+						"168",
+						"56",
+						"1"
 					],
 					"port": "8080",
 					"path": [
@@ -111,10 +108,275 @@
 		{
 			"name": "Decode jwt",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwNDYzMjgyOSwiZXhwIjoxNjA0NjMzMTI5fQ.zi0lyMTcEPzNBVhIZNM9u8e6suk6pCQp0UfnWKVH_Msl0gvUw9xHaiW9ZUbdAkkNPQAxqdkMeR1dzvFTDZ44MA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwNDYzMjgyOSwiZXhwIjoxNjA0NjMzMTI5fQ.zi0lyMTcEPzNBVhIZNM9u8e6suk6pCQp0UfnWKVH_Msl0gvUw9xHaiW9ZUbdAkkNPQAxqdkMeR1dzvFTDZ44MA",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.56.1:8080/admin/token",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Admin Authentication Test",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwNDQyNDI4NywiZXhwIjoxNjA0NDI0NTg3fQ.0r3o-2BFyQ5tfjSGmoeUDyPFcYpkUM3kk_R1LPVlC0M3BadVeAgdpvAAPSPy3DoY_GAYd8a_Bo1iV-KXCRPQRg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcDEyMyIsImlhdCI6MTYwNDYzMjU4MCwiZXhwIjoxNjA0NjMyODgwfQ.AFOfpqPpdloZA68mDPK6KvkbgTtEIN2aEDLyFKW77i643h07mSEg5puCCG1ErdmelJhNt4tCPkYPbHtzvqgCww"
+				},
+				"url": {
+					"raw": "http://192.168.56.1:8080/auth/validate",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Latest data from given state on given date",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NTI3MjIsImV4cCI6MTYwNDg1MzAyMn0.0536iumy8x5FAmlrhSCzFjry-cDDV0F6A2VUVRRLUJsIV4mc2lRnww6_JOVacn_DwMuU8paSkfB_uDddMbGySg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/state/3?date=2020-11-06",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"state",
+						"3"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2020-11-06"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Date range",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NTk2OTEsImV4cCI6MTYwNDg1OTk5MX0.nYnEMHv4FoHZ9I3u2CK9gO8ztS8ypjxNTKzF-sqJcfMyG0GdaC7cxl4OIPijOYSaQEVGPMn0SPbc6pGV5LZCCg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/daterange",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"daterange"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get statedata in between dates",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NjYwNzMsImV4cCI6MTYwNDg2NjM3M30.kU9PWw8_n_SWW5X3sfenuiEugafnGXrBL8K85MwalzmW6wOEwQ69pC8tH_-AD8ON2_7-O_1owxImNvZcr-y3rA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/state/3/2020-11-03/2020-11-06",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"state",
+						"3",
+						"2020-11-03",
+						"2020-11-06"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get district data in between dates",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NjY0MjksImV4cCI6MTYwNDg2NjcyOX0.ud0oungQDM2zU29V4GGd0jtNC_0iHrrOgjXmFwTWj6L-dyIKgGeU20ermkMg7Q7yUCERIUaAW1r6F1EeDSAljQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/district/7/2020-11-03/2020-11-06",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"district",
+						"7",
+						"2020-11-03",
+						"2020-11-06"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all districts list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4Njc5ODksImV4cCI6MTYwNDg2ODI4OX0.GVtNKQKsedismep72w1GEjYxwq_ozMHJdP06pWd4uekkgeJPWVFuSHzdcUPJ_uDosURorzbMWZSQW77tcmRQew",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/district/?stateid=5",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"district",
+						""
+					],
+					"query": [
+						{
+							"key": "stateid",
+							"value": "5"
+						}
+					]
 				}
 			},
 			"response": []

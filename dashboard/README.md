@@ -1,6 +1,5 @@
 ### TODO:
 - best way to send password data in js
-- future: token decoder page for admin user
 - signout button to clear jwt from ls
 
 #### Done:

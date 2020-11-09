@@ -1,14 +1,12 @@
 #### TODO:
 - add TokenExpired Exception , then redirect to login page
-- add role based autz
 - protect with ssl certificate(user pritamprasad.com cert to create new free certs)
 - write unit tests
+- String -> constants
 - basic validations : 422
-- remove all hardcoded
-- add license / conbuting guide
-- use batching in jpa
+- add license / contributing guide
 - Add country data pooling
- 
+
 
 
 #### Done:
@@ -33,7 +31,7 @@ auth:
 ```
 
 ### Endpoints:
-| Secured? | Verb   |   endpoint    | Body          | Roles         |  
+| Secured? | Verb   |   endpoint    | Body          | Roles         |
 | -------- | ------ | ------------- | --------------|---------------|
 | open     | POST   | /auth/signin  | SignupRequest | *             |
 | open     | POST   | /auth/signup  | LoginRequest  | *             |
