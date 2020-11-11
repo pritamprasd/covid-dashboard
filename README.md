@@ -140,3 +140,4 @@ JWTToken:
 - add license / contributing guide
 - deploy to public url through Github CD, and use `letsencrypt` to provide ssl to API
 - Structurize UI Components
+- Create a PWA version of the UI

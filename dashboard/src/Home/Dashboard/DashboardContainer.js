@@ -51,13 +51,18 @@ function DashboardContainer() {
     count: tested
   }
 
+  const handleDateChange = (date) => {
+    console.log("Updating current date to :" + normalizeDate(date))
+    setSelectedDate(date)
+  }
+
   useEffect(() => {
     let token = store.getState().auth.token;
     if (token === '') {
       console.log("No token found")
       history.push("/login")
     }
-    console.log("token found : "+ token)
+    console.log("token found : " + token)
     const config = {
       headers: {
         "Authorization": "Bearer " + token
@@ -80,7 +85,7 @@ function DashboardContainer() {
       if (res.status === 200) {
         console.log("GET date : " + res.data.maxDate + "   " + res.data.minDate)
         setMaxDate(new Date(res.data.maxDate))
-        setMinDate(new Date(res.data.minDate))        
+        setMinDate(new Date(res.data.minDate))
         handleDateChange(new Date(res.data.maxDate))
         console.log("Updated date range from max: " + new Date(res.data.maxDate) + "  to min:" + new Date(res.data.minDate))
       }
@@ -117,7 +122,7 @@ function DashboardContainer() {
         history.push("/login")
       }
     )
-    INTERNAL_API.get('/state/' + event.target.value + "?date=" + selectedDate, config).then(res => {
+    INTERNAL_API.get('/state/' + event.target.value + "?start=" + normalizeDate(selectedDate) + "&end=" + normalizeDate(selectedDate), config).then(res => {
       if (res.status === 200) {
         console.log("GET state: " + JSON.stringify(res.data))
         setConfirmed(res.data.counts[0].confirmed || 0)
@@ -131,18 +136,18 @@ function DashboardContainer() {
         history.push("/login")
       }
     )
-    INTERNAL_API.get('/state/' + event.target.value + "/" + normalizeDate(minDate)+ "/" + normalizeDate(maxDate), config)
-    .then(res => {
-      if (res.status === 200) {
-        console.log("GET state detailed: " + JSON.stringify(res.data))
-        setEntityDetailedData(res.data)      
-      }
-    }).catch(
-      err => {
-        console.error("GET state data call failed, retry again" + err)
-        history.push("/login")
-      }
-    )
+    INTERNAL_API.get('/state/' + event.target.value + "?start=" + normalizeDate(minDate) + "&end=" + normalizeDate(maxDate), config)
+      .then(res => {
+        if (res.status === 200) {
+          console.log("GET state detailed: " + JSON.stringify(res.data))
+          setEntityDetailedData(res.data)
+        }
+      }).catch(
+        err => {
+          console.error("GET state data call failed, retry again" + err)
+          history.push("/login")
+        }
+      )
   }
 
   const handleDistrictSelect = (event) => {
@@ -157,7 +162,7 @@ function DashboardContainer() {
         "Authorization": "Bearer " + token
       }
     }
-    INTERNAL_API.get('/district/' + event.target.value + "?date=" + selectedDate, config).then(res => {
+    INTERNAL_API.get('/district/' + event.target.value + "?start=" + normalizeDate(selectedDate) + "&end=" + normalizeDate(selectedDate), config).then(res => {
       if (res.status === 200) {
         console.log("GET state: " + res.data || 'N/A')
         setConfirmed(res.data.counts[0].confirmed || 'N/A')
@@ -171,23 +176,18 @@ function DashboardContainer() {
         history.push("/login")
       }
     )
-    INTERNAL_API.get('/district/' + event.target.value + "/" + normalizeDate(minDate)+ "/" + normalizeDate(maxDate), config)
-    .then(res => {
-      if (res.status === 200) {
-        console.log("GET district detailed: " + JSON.stringify(res.data))
-        setEntityDetailedData(res.data)      
-      }
-    }).catch(
-      err => {
-        console.error("GET district data call failed, retry again" + err)
-        history.push("/login")
-      }
-    )
-  }
-
-  const handleDateChange = (date) => {
-    console.log("Updating current date to :" + normalizeDate(date))
-    setSelectedDate(normalizeDate(date))
+    INTERNAL_API.get('/district/' + event.target.value + "?start=" + normalizeDate(minDate) + "&end=" + normalizeDate(maxDate), config)
+      .then(res => {
+        if (res.status === 200) {
+          console.log("GET district detailed: " + JSON.stringify(res.data))
+          setEntityDetailedData(res.data)
+        }
+      }).catch(
+        err => {
+          console.error("GET district data call failed, retry again" + err)
+          history.push("/login")
+        }
+      )
   }
 
   const normalizeDate = (date) => {
@@ -195,7 +195,7 @@ function DashboardContainer() {
   }
 
   return (
-    <div id='dashboardContainer'>
+    <React.Fragment>
       <div id='topPaddingDashboard'></div>
       <Grid container >
         <Grid container item justify="flex-start" spacing={2}>
@@ -210,7 +210,7 @@ function DashboardContainer() {
           <Grid item>
             <FormControl variant="outlined" className="stateSelect">
               <InputLabel>State</InputLabel>
-              <Select value={selectedState} onChange={handleStateSelect} label="State" >
+              <Select value={selectedState} onChange={handleStateSelect} label="State" style={{minWidth: 80}}>
                 {allStates.map((state) => <MenuItem value={state.id}>{state.name}</MenuItem>)}
               </Select>
             </FormControl>
@@ -219,7 +219,7 @@ function DashboardContainer() {
           <Grid item>
             <FormControl variant="outlined" className="districtSelect">
               <InputLabel>District</InputLabel>
-              <Select value={selectedDistrict} onChange={handleDistrictSelect} label="District" >
+              <Select value={selectedDistrict} onChange={handleDistrictSelect} label="District" style={{minWidth: 160}}>
                 {allDistricts.map((district) => <MenuItem value={district.id}>{district.name}</MenuItem>)}
               </Select>
             </FormControl>
@@ -240,11 +240,11 @@ function DashboardContainer() {
             <InfoTile data={testedTileData} />
           </Grid>
         </Grid>
-        <Grid container item justify="space-evenly"> 
-          <DatewiseGraph entity={entityDetailedData}/>
+        <Grid container item justify="space-evenly">
+          <DatewiseGraph entity={entityDetailedData} />
         </Grid>
       </Grid>
-    </div >
+    </React.Fragment >
   );
 }
 

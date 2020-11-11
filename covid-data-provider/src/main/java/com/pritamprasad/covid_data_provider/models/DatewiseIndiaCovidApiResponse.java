@@ -1,4 +1,4 @@
-package com.pritamprasad.covid_data_provider.client;
+package com.pritamprasad.covid_data_provider.models;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class DatewiseIndiaCovidApiResponse {
         private Meta meta;
 
         @SerializedName("districts")
-        private Map<String, Districts> districts;
+        private Map<String, District> districts;
 
         @SerializedName("total")
         private MetaData total;
@@ -55,7 +55,7 @@ public class DatewiseIndiaCovidApiResponse {
 
     @Getter
     @ToString
-    public static class Districts {
+    public static class District {
         @SerializedName("delta")
         private MetaData delta;
 

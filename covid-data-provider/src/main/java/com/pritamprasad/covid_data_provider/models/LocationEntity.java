@@ -1,30 +1,33 @@
-package com.pritamprasad.covid_data_provider.repository;
+package com.pritamprasad.covid_data_provider.models;
 
-import com.pritamprasad.covid_data_provider.models.EntityType;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "location")
+@Table(
+        name = "location",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"code", "parentId"})
+)
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationEntity {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
     private String code;
 
     private Long population;
 
-    private Long parentId = 0L;
+    private Long parentId;
 
     private EntityType type;
 

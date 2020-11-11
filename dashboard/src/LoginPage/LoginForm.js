@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { Button, TextField, Grid, Typography, Divider } from '@material-ui/core';
 import store from '../storage/store';
 
-store.subscribe((state) => { console.log(state)})
+store.subscribe((state) => { console.log(state) })
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -50,8 +50,8 @@ function LoginForm() {
     INTERNAL_API.post(`auth/signin`, requestBody).then(res => {
       if (res.status === 200) {
         const jwtString = res.data.jwt;
-        console.log("JWT: "+ jwtString)
-        store.dispatch({ type: 'jwt', token: jwtString })               
+        console.log("JWT: " + jwtString)
+        store.dispatch({ type: 'jwt', token: jwtString })
         history.push("/home")
       }
     }).catch(
@@ -62,8 +62,12 @@ function LoginForm() {
     )
   }
 
+  const validateEmail = (email) => {
+
+  }
+
   return (
-    <div>
+    <React.Fragment>
       { displayLogin &&
         <div id='loginFormContainer'>
           <form className="root">
@@ -72,11 +76,11 @@ function LoginForm() {
                 <Typography>Login</Typography>
               </Grid>
               <Grid item >
-                <TextField id="username" type="text" label="Username" variant="outlined"
+                <TextField id="username" type="text" label="Username" variant="outlined" required
                   color="secondary" autoFocus={true} onChange={e => { setUsername(e.target.value) }} />
               </Grid>
               <Grid item >
-                <TextField id="pass" type="password" label="Password" variant="outlined"
+                <TextField id="pass" type="password" label="Password" variant="outlined" required
                   color="secondary" onChange={e => { setPassword(e.target.value) }} />
               </Grid>
               <Grid item>
@@ -109,15 +113,16 @@ function LoginForm() {
                 <Typography>Create Account</Typography>
               </Grid>
               <Grid item >
-                <TextField id="username" type="text" label="Username" variant="outlined"
+                <TextField id="username" type="text" label="Username" variant="outlined" required
                   color="secondary" autoFocus={true} onChange={e => { setUsername(e.target.value) }} />
               </Grid>
               <Grid item >
-                <TextField id="email" type="text" label="Email" variant="outlined"
-                  color="secondary" onChange={e => { setEmail(e.target.value) }} />
+                <TextField id="email" type="text" label="Email" variant="outlined" required
+                  color="secondary" onChange={e => { setEmail(e.target.value) }}
+                  onCBlur={e => { validateEmail(e.target.value) }} />
               </Grid>
               <Grid item >
-                <TextField id="pass" type="password" label="Password" variant="outlined"
+                <TextField id="pass" type="password" label="Password" variant="outlined" required
                   color="secondary" onChange={e => { setPassword(e.target.value) }} />
               </Grid>
               <Grid item>
@@ -139,7 +144,7 @@ function LoginForm() {
           </form>
         </div>
       }
-    </div >
+    </React.Fragment>
   );
 }
 

@@ -1,10 +1,11 @@
+import React from 'react';
 import './InfoTile.css';
 
 const { Card, Typography, CardContent, Divider } = require("@material-ui/core");
 
 function InfoTile({ data }) {
     return (
-        <div>
+        <React.Fragment>
             <Card className="infoTilesRoot">
                 <CardContent className="infoTiles">
                     <Typography className="infoTitleCount" align="center" variant="h5" color="primary">
@@ -16,7 +17,7 @@ function InfoTile({ data }) {
                     </Typography>
                 </CardContent>
             </Card>
-        </div>
+        </React.Fragment>
     );
 }
 

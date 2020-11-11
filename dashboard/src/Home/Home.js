@@ -1,5 +1,5 @@
 import './Home.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,7 +9,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import DashboardContainer from './Dashboard/DashboardContainer';
 import store from "../storage/store"
-import INTERNAL_API from '../_api/covid-internal/internalapi'
 import { useHistory } from "react-router-dom";
 import Profile from './profile/Profile';
 

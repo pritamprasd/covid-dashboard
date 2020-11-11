@@ -12,28 +12,30 @@ import java.util.UUID;
 import static java.util.UUID.randomUUID;
 
 @Component
+@Getter
+@Setter
 public class UserDefinedProperties {
 
     private static final Logger logger = LoggerFactory.getLogger(UserDefinedProperties.class);
 
     @Value("${covid19india.url.latestLog}")
-    @Getter
     private String latestLogUrl;
 
     @Value("${covid19india.url.datewiseSummary}")
-    @Getter
-    @Setter
     private String datewiseSummaryUrl;
 
-    @Getter
     @Value("${covid19india.pastDataInNumberOfDays}")
     private int pastDataInNumberOfDays;
 
-    @Getter
     @Value("${covid19india.timeTravelMinusDays}")
     private int timeTravelMinusDays;
 
-    @Getter
+    @Value("${auth.jwtSecret}")
+    private String jwtSecret;
+
+    @Value("${auth.jwtExpirationMs}")
+    private int jwtExpirationMs;
+
     private String adminSessionKey;
 
     public UserDefinedProperties(){

@@ -4,12 +4,11 @@ import com.google.gson.Gson;
 import com.pritamprasad.covid_data_provider.exception.BadRequestException;
 import com.pritamprasad.covid_data_provider.models.LoginRequest;
 import com.pritamprasad.covid_data_provider.models.SignupRequest;
-import com.pritamprasad.covid_data_provider.repository.LocationEntity;
+import com.pritamprasad.covid_data_provider.models.LocationEntity;
 import com.pritamprasad.covid_data_provider.models.LocationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,4 +1,4 @@
-package com.pritamprasad.covid_data_provider.security;
+package com.pritamprasad.covid_data_provider.security.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

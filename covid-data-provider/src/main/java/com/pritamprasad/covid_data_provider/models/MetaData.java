@@ -1,4 +1,4 @@
-package com.pritamprasad.covid_data_provider.client;
+package com.pritamprasad.covid_data_provider.models;
 
 import lombok.Getter;
 

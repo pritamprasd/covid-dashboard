@@ -21,6 +21,24 @@ auth:
 ---
 spring:
   profiles:
+    - dev
+  datasource:
+    url: jdbc:postgresql://${COVID_DB_HOST}:5432/coviddb
+    username: ${COVID_DB_USER}
+    password: ${COVID_DB_PASS}
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 5
+      idle-timeout: 300000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+---
+spring:
+  profiles:
     - local
   datasource:
     url: jdbc:h2:mem:coviddb
@@ -34,24 +52,6 @@ spring:
       idle-timeout: 300000
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: create
-    show-sql: false
----
-spring:
-  profiles:
-    - dev
-  datasource:
-    url: jdbc:postgresql://${COVID_DB_HOST}:5432/coviddb
-    username: ${COVID_DB_USER}
-    password: ${COVID_DB_PASS}
-    hikari:
-      connection-timeout: 20000
-      minimum-idle: 5
-      maximum-pool-size: 5
-      idle-timeout: 300000
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: false

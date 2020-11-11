@@ -1,5 +1,6 @@
-package com.pritamprasad.covid_data_provider.security;
+package com.pritamprasad.covid_data_provider.security.service;
 
+import com.pritamprasad.covid_data_provider.security.models.UserDetailsImpl;
 import com.pritamprasad.covid_data_provider.security.models.UserEntity;
 import com.pritamprasad.covid_data_provider.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,13 +1,11 @@
-package com.pritamprasad.covid_data_provider.security;
+package com.pritamprasad.covid_data_provider.security.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pritamprasad.covid_data_provider.security.models.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;

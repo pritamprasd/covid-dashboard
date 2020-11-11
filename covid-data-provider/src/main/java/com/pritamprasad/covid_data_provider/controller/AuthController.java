@@ -3,8 +3,8 @@ package com.pritamprasad.covid_data_provider.controller;
 import com.pritamprasad.covid_data_provider.models.JwtResponse;
 import com.pritamprasad.covid_data_provider.models.LoginRequest;
 import com.pritamprasad.covid_data_provider.models.SignupRequest;
-import com.pritamprasad.covid_data_provider.security.JwtUtils;
-import com.pritamprasad.covid_data_provider.security.UserDetailsImpl;
+import com.pritamprasad.covid_data_provider.security.service.JwtUtils;
+import com.pritamprasad.covid_data_provider.security.models.UserDetailsImpl;
 import com.pritamprasad.covid_data_provider.security.models.RoleEntity;
 import com.pritamprasad.covid_data_provider.security.models.UserEntity;
 import com.pritamprasad.covid_data_provider.security.models.UserRole;
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 import static com.pritamprasad.covid_data_provider.util.Validations.validateSigninRequest;
 import static com.pritamprasad.covid_data_provider.util.Validations.validateSignupRequest;
+import static java.lang.System.currentTimeMillis;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -64,7 +65,7 @@ public class AuthController {
                         loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication, currentTimeMillis());
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
@@ -89,7 +90,6 @@ public class AuthController {
                     .badRequest()
                     .body("Error: Username is already taken!");
         }
-
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()

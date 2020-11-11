@@ -1,5 +1,6 @@
-package com.pritamprasad.covid_data_provider.security;
+package com.pritamprasad.covid_data_provider.security.filters;
 
+import com.pritamprasad.covid_data_provider.security.service.JwtUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

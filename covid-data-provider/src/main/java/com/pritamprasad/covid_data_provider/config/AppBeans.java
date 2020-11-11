@@ -11,12 +11,12 @@ import org.springframework.web.client.RestTemplate;
 public class AppBeans {
 
     @Bean
-    public RestTemplate restTemplate(final RestTemplateBuilder restTemplateBuilder){
+    public RestTemplate restTemplate(final RestTemplateBuilder restTemplateBuilder) {
         return restTemplateBuilder.build();
     }
 
     @Bean
-    public Gson gson(){
+    public Gson gson() {
         return new GsonBuilder()
                 .setPrettyPrinting()
                 .create();

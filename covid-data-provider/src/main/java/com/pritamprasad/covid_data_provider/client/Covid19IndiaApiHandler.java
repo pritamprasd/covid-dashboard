@@ -1,16 +1,15 @@
 package com.pritamprasad.covid_data_provider.client;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.pritamprasad.covid_data_provider.models.DatewiseIndiaCovidApiResponse;
+import com.pritamprasad.covid_data_provider.models.DatewiseIndiaCovidApiResponse.State;
 import com.pritamprasad.covid_data_provider.util.UserDefinedProperties;
-import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -18,71 +17,53 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.*;
 
-import static java.lang.String.valueOf;
+import static com.pritamprasad.covid_data_provider.client.ClientHelper.constructUrlForCovidindia19Api;
+import static java.util.Optional.ofNullable;
 
+/**
+ * DataPulledFrom: https://www.covid19india.org/
+ */
 @Component
-public class Covid19IndiaApiHandler {
+public class Covid19IndiaApiHandler implements CovidApi {
 
-    private Logger logger = LoggerFactory.getLogger(Covid19IndiaApiHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(Covid19IndiaApiHandler.class);
 
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    private UserDefinedProperties properties;
+    private final UserDefinedProperties properties;
 
-    private Gson gson;
+    private final Gson gson;
 
     @Autowired
-    public Covid19IndiaApiHandler(RestTemplate restTemplate, UserDefinedProperties properties, Gson gson) {
+    public Covid19IndiaApiHandler(final RestTemplate restTemplate, final UserDefinedProperties properties,
+                                  final Gson gson) {
         this.restTemplate = restTemplate;
         this.properties = properties;
         this.gson = gson;
     }
 
-    public List<LatestLogEndpointResponse> getLatestLog() {
-        LatestLogEndpointResponse[] endpointResponses = restTemplate.getForObject(properties.getLatestLogUrl(), LatestLogEndpointResponse[].class);
-        return endpointResponses == null ? Collections.emptyList() : Arrays.asList(endpointResponses);
-    }
-
-    public DatewiseIndiaCovidApiResponse getSummaryForDate(final LocalDate date) {
-        DatewiseIndiaCovidApiResponse apiResponse = new DatewiseIndiaCovidApiResponse();
-        ResponseEntity<String> responseEntity = null;
+    @Override
+    public Optional<DatewiseIndiaCovidApiResponse> getCovidApiResponseForDate(final LocalDate date) {
+        DatewiseIndiaCovidApiResponse apiResponse = null;
+        ResponseEntity<String> responseEntity;
         try {
-            responseEntity = restTemplate.getForEntity(
-                    constructUrl(date.getYear(), date.getMonthValue(), date.getDayOfMonth()),
-                    String.class);
-            if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                apiResponse = parseResponseForSummaryDataByDate(responseEntity.getBody());
-                apiResponse.setDateStamp(date);
-            } else {
-                logger.warn("Response not obtained, check constructed url..");
-            }
-        } catch (URISyntaxException e) {
-            logger.warn("Url construction failed : {}", e.getMessage());
+            final URI constructedUrl = constructUrlForCovidindia19Api(date, properties.getDatewiseSummaryUrl());
+            responseEntity = restTemplate.getForEntity(constructedUrl, String.class);
+            apiResponse = parseResponseForSummaryDataByDate(responseEntity.getBody());
+            apiResponse.setDateStamp(date);
+            logger.debug("Response obtained for url : {}", constructedUrl);
+        } catch (URISyntaxException | RestClientException e) {
+            logger.warn("Url construction failed with message : {}", e.getMessage());
         }
-        return apiResponse;
+        return ofNullable(apiResponse);
     }
 
     private DatewiseIndiaCovidApiResponse parseResponseForSummaryDataByDate(final String responseString) {
-        DatewiseIndiaCovidApiResponse apiResponse = new DatewiseIndiaCovidApiResponse();
-        Map stateMap = gson.fromJson(responseString, Map.class);
-        stateMap.forEach((key, value) -> {
-                    DatewiseIndiaCovidApiResponse.State state = gson.fromJson(gson.toJson(value), DatewiseIndiaCovidApiResponse.State.class);
-                    apiResponse.getStateMap().put(key.toString(), state);
-                }
-        );
+        final DatewiseIndiaCovidApiResponse apiResponse = new DatewiseIndiaCovidApiResponse();
+        final Map<String, Object> stateMap = gson.fromJson(responseString, Map.class);
+        stateMap.forEach((key, value) ->
+                apiResponse.getStateMap().put(key, gson.fromJson(gson.toJson(value), State.class)));
         return apiResponse;
     }
-
-    private URI constructUrl(@NonNull int year, @NonNull int month, @NonNull int date) throws URISyntaxException {
-        final String normalizedMonth = valueOf(month).length() == 1 ? "0"+ month : valueOf(month);
-        final String normalizedDay= valueOf(date).length() == 1 ? "0"+ date : valueOf(date);
-        final String uriString = properties.getDatewiseSummaryUrl()
-                .replace("YYYY", valueOf(year))
-                .replace("MM", normalizedMonth)
-                .replace("DD", normalizedDay);
-        logger.debug("Constructed uri : {}", uriString);
-        return new URI(uriString);
-    }
-
 
 }

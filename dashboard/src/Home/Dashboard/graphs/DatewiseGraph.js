@@ -1,7 +1,8 @@
-import { LineChart, PieChart } from 'react-chartkick'
+import React from 'react';
+import { LineChart } from 'react-chartkick'
 import './DatewiseGraph.css';
 import 'chart.js'
-import { Divider, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 
 const DatewiseGraph = ({ entity }) => {
   const getConfirmedData = (entity) => {
@@ -10,9 +11,9 @@ const DatewiseGraph = ({ entity }) => {
       let confirmed = {}
       confirmed.name = "Confirmed"
       confirmed.data = {}
-      entity?.counts?.map(count => {
+      entity?.counts?.map(count => (
         confirmed.data[count.date] = count.confirmed
-      })
+      ))
       overallData.push(confirmed)
     }
     return overallData
@@ -24,9 +25,9 @@ const DatewiseGraph = ({ entity }) => {
       let deceased = {}
       deceased.name = "Deceased"
       deceased.data = {}
-      entity?.counts?.map(count => {
+      entity?.counts?.map(count => (
         deceased.data[count.date] = count.deceased
-      })
+      ))
       overallData.push(deceased)
     }
     return overallData
@@ -38,9 +39,9 @@ const DatewiseGraph = ({ entity }) => {
       let recovered = {}
       recovered.name = "Recovered"
       recovered.data = {}
-      entity?.counts?.map(count => {
+      entity?.counts?.map(count => (
         recovered.data[count.date] = count.recovered
-      })
+      ))
       overallData.push(recovered)
     }
     return overallData
@@ -52,15 +53,15 @@ const DatewiseGraph = ({ entity }) => {
       let tested = {}
       tested.name = "Tested"
       tested.data = {}
-      entity?.counts?.map(count => {
+      entity?.counts?.map(count => (
         tested.data[count.date] = count.tested
-      })
+      ))
       overallData.push(tested)
     }
     return overallData
   }
   return (
-    <div id='datewiseGraphContainer'>
+    <React.Fragment>
       <div id='topPaddingGraphs'></div>
       <Grid item container spacing={4}>
         <Grid item>
@@ -80,7 +81,7 @@ const DatewiseGraph = ({ entity }) => {
             xtitle="Date" ytitle="Number of cases" legend="bottom" colors={["black"]} />
         </Grid>
       </Grid>
-    </div>
+    </React.Fragment>
   );
 }
 

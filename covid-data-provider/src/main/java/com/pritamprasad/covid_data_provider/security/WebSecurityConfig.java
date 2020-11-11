@@ -1,5 +1,7 @@
 package com.pritamprasad.covid_data_provider.security;
 
+import com.pritamprasad.covid_data_provider.security.filters.AuthTokenFilter;
+import com.pritamprasad.covid_data_provider.security.service.AuthEntryPointJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

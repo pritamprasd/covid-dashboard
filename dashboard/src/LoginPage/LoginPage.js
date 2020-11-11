@@ -1,13 +1,14 @@
+import React from 'react';
 import LoginForm from './LoginForm';
 import './LoginPage.css';
 
 
 function LoginPage() {
   return (
-    <div>
+    <React.Fragment>
       <div id="topPadding"></div>
       <LoginForm />
-    </div>
+    </React.Fragment>
   )
 }
 

@@ -1,4 +1,4 @@
-package com.pritamprasad.covid_data_provider.config;
+package com.pritamprasad.covid_data_provider.startup_tasks;
 
 import com.pritamprasad.covid_data_provider.security.models.RoleEntity;
 import com.pritamprasad.covid_data_provider.security.models.UserRole;
