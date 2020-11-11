@@ -1,6 +1,8 @@
 # Covid-dashboard
 Dashboard to visualize Covid19 India Data, with User login/Registration.
 
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fpritamprasd%2Fcovid-dashboard%2Fbadge%3Fref%3Dmain&style=flat)](https://actions-badge.atrox.dev/pritamprasd/covid-dashboard/goto?ref=main)
+
 ### Components:
 The Covid Dashboard system has mainly 3 components.
 
