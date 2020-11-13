@@ -24,6 +24,10 @@ public class Messages {
     public static final String CURRENT_DATE_RANGE_FROM_TO_MSG = "Current date range from {} to {}";
     public static final String GET_ADMIN_CALLED = "GET /admin called..";
     public static final String POST_TOKEN_CALLED = "POST /admin/token called.. ";
+    public static final String RESPONSE_OBTAINED_FOR_URL = "Response obtained for url : {}";
+    public static final String URL_CONSTRUCTION_FAILED_WITH_MESSAGE = "Url construction failed with message : {}";
+    public static final String CREATING_NEW_DISTRICT_ENTITY = "Creating new District Entity.. {}";
+    public static final String CREATING_NEW_STATE_ENTITY = "Creating new State Entity.. {}";
 
     private Messages(){}
 

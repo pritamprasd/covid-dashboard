@@ -1,9 +1,9 @@
 package com.pritamprasad.covid_data_provider.service;
 
 import com.pritamprasad.covid_data_provider.exception.EntityNotFoundException;
-import com.pritamprasad.covid_data_provider.models.DistrictResponse;
 import com.pritamprasad.covid_data_provider.models.LocationEntity;
 import com.pritamprasad.covid_data_provider.models.MetaDataEntity;
+import com.pritamprasad.covid_data_provider.models.StateResponse;
 import com.pritamprasad.covid_data_provider.repository.EntityRepository;
 import com.pritamprasad.covid_data_provider.repository.MetadataRepository;
 import io.jsonwebtoken.lang.Assert;
@@ -21,9 +21,9 @@ import static java.util.Optional.of;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DistrictHandlerServiceTest {
+public class StateHandlerServiceTest {
 
-    private DistrictHandlerService districtHandlerService;
+    private StateHandlerService stateHandlerService;
 
     private EntityRepository entityRepository;
 
@@ -33,81 +33,79 @@ public class DistrictHandlerServiceTest {
     void setUp() {
         entityRepository = mock(EntityRepository.class);
         metadataRepository = mock(MetadataRepository.class);
-        districtHandlerService = new DistrictHandlerService(entityRepository, metadataRepository);
+        stateHandlerService = new StateHandlerService(entityRepository, metadataRepository);
     }
 
     @Test
-    public void getAllDistrictByStateIdSuccessTest() {
+    public void getAllStatesByCountryIdSuccessTest() {
         List<LocationEntity> testEntities = new ArrayList<>();
         String test_entityName = "Test_Entity";
-        long stateId = 100L;
+        long countryId = 0L;
         long entityId = 1001L;
         testEntities.add(LocationEntity.builder()
                 .name(test_entityName)
-                .parentId(stateId)
+                .parentId(countryId)
                 .id(entityId)
                 .build()
         );
-        when(entityRepository.findAllLocationEntityByParentId(stateId)).thenReturn(testEntities);
-        List<DistrictResponse> allDistrictByStateId = districtHandlerService.getAllDistrictByStateId(stateId);
-        Assert.isTrue(!allDistrictByStateId.isEmpty());
-        Assert.isTrue(allDistrictByStateId.get(0).getStateId().equals(stateId));
-        Assert.isTrue(allDistrictByStateId.get(0).getId() == entityId);
-        Assert.isTrue(allDistrictByStateId.get(0).getName().equals(test_entityName));
+        when(entityRepository.findAllLocationEntityByParentId(countryId)).thenReturn(testEntities);
+        List<StateResponse> allStatesByCountryId = stateHandlerService.getAllStatesByCountryId(countryId);
+        Assert.isTrue(!allStatesByCountryId.isEmpty());
+        Assert.isTrue(allStatesByCountryId.get(0).getCountryId().equals(countryId));
+        Assert.isTrue(allStatesByCountryId.get(0).getId() == entityId);
+        Assert.isTrue(allStatesByCountryId.get(0).getName().equals(test_entityName));
     }
 
     @Test
-    public void getAllDistrictByStateIdEntityNotFoundExceptionTest() {
+    public void getAllStatesByCountryIdEntityNotFoundExceptionTest() {
         when(entityRepository.findAllLocationEntityByParentId(100L)).thenReturn(emptyList());
         try {
-            List<DistrictResponse> allDistrictByStateId = districtHandlerService.getAllDistrictByStateId(100L);
-            Assertions.fail("getAllDistrictByStateIdEntityNotFoundExceptionTest failed");
+            List<StateResponse> allDistrictByStateId = stateHandlerService.getAllStatesByCountryId(100L);
+            Assertions.fail("getAllStatesByCountryIdEntityNotFoundExceptionTest failed");
         } catch (EntityNotFoundException ex) {
             //Test passes
         }
     }
 
     @Test
-    public void getDistrictsByIdOnDateSuccessTest() {
+    public void getStateByIdOnDateSuccessTest() {
         String test_entityName = "Test_Entity";
-        long stateId = 100L;
+        long countryId = 100L;
         long entityId = 1001L;
         LocalDate testDate = LocalDate.now();
-        ;
-        LocationEntity entity = LocationEntity.builder().name(test_entityName).parentId(stateId).id(entityId).build();
+        LocationEntity entity = LocationEntity.builder().name(test_entityName).parentId(countryId).id(entityId).build();
         MetaDataEntity metaDataEntity = MetaDataEntity.builder().confirmed(0L).deceased(0L).recovered(0L).tested(0L)
                 .entityId(entityId).createdDate(testDate).build();
         when(entityRepository.findById(entityId)).thenReturn(of(entity));
         when(metadataRepository.findMetaByEntityIdOnDate(entityId, testDate)).thenReturn(Optional.of(metaDataEntity));
 
-        DistrictResponse districtsByIdOnDate = districtHandlerService.getDistrictsByIdOnDate(entityId, testDate);
+        StateResponse districtsByIdOnDate = stateHandlerService.getStateByIdOnDate(entityId, testDate);
         Assert.isTrue(districtsByIdOnDate.getName().equals(test_entityName));
         Assert.isTrue(districtsByIdOnDate.getCounts().get(0).getConfirmed() == 0L);
     }
 
     @Test
-    public void getDistrictsByIdOnDateEntityNotFoundExceptionTest() {
+    public void getStateByIdOnDateEntityNotFoundExceptionTest() {
         long entityId = 1001L;
         LocalDate testDate = LocalDate.now();
-        ;
         when(entityRepository.findById(entityId)).thenReturn(Optional.empty());
         try {
-            districtHandlerService.getDistrictsByIdOnDate(entityId, testDate);
-            Assertions.fail("getDistrictsByIdOnDateEntityNotFoundExceptionTest failed.");
+            stateHandlerService.getStateByIdOnDate(entityId, testDate);
+            Assertions.fail("getStateByIdOnDateEntityNotFoundExceptionTest failed.");
         } catch (EntityNotFoundException ex) {
             //Test passes
         }
     }
 
     @Test
-    public void getDistrictDataInBetweenDatesSuccessTest() {
+    public void getStateDataInBetweenSuccessTest() {
         String test_entityName = "Test_Entity";
-        long stateId = 100L;
+        long countryId = 100L;
         long entityId = 1001L;
         LocalDate start = LocalDate.now();
         LocalDate end = start.plusDays(1);
 
-        LocationEntity entity = LocationEntity.builder().name(test_entityName).parentId(stateId).id(entityId).build();
+        LocationEntity entity = LocationEntity.builder().name(test_entityName).parentId(countryId).id(entityId).build();
         List<MetaDataEntity> metaDataEntities = new ArrayList<>();
         metaDataEntities.add(MetaDataEntity.builder().confirmed(0L).deceased(0L).recovered(0L).tested(0L)
                 .entityId(entityId).createdDate(start).build());
@@ -117,7 +115,7 @@ public class DistrictHandlerServiceTest {
         when(entityRepository.findById(entityId)).thenReturn(of(entity));
         when(metadataRepository.findAllByIdBetweenDates(entityId, start, end)).thenReturn(metaDataEntities);
 
-        DistrictResponse districtsByIdOnDate = districtHandlerService.getDistrictDataInBetweenDates(entityId, start,end);
+        StateResponse districtsByIdOnDate = stateHandlerService.getStateDataInBetween(entityId, start,end);
 
         Assert.isTrue(districtsByIdOnDate.getName().equals(test_entityName));
         Assert.isTrue(districtsByIdOnDate.getCounts().get(0).getConfirmed() == 0L);
@@ -125,14 +123,14 @@ public class DistrictHandlerServiceTest {
     }
 
     @Test
-    public void getDistrictDataInBetweenDatesEntityNotFoundExceptionTest() {
+    public void getStateDataInBetweenEntityNotFoundExceptionTest() {
         long entityId = 1001L;
         LocalDate start = LocalDate.now();
         LocalDate end = start.plusDays(1);
         when(entityRepository.findById(entityId)).thenReturn(Optional.empty());
         try{
-            DistrictResponse districtsByIdOnDate = districtHandlerService.getDistrictDataInBetweenDates(entityId, start,end);
-            Assertions.fail("getDistrictDataInBetweenDatesEntityNotFoundExceptionTest failed");
+            StateResponse districtsByIdOnDate = stateHandlerService.getStateDataInBetween(entityId, start,end);
+            Assertions.fail("getStateDataInBetweenEntityNotFoundExceptionTest failed");
         } catch (EntityNotFoundException ex){
             //Test Passes
         }

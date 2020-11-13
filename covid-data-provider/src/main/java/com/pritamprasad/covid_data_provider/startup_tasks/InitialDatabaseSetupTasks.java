@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+import static com.pritamprasad.covid_data_provider.security.models.UserRole.ADMIN;
+import static com.pritamprasad.covid_data_provider.security.models.UserRole.USER;
+
 @Component
 public class InitialDatabaseSetupTasks implements ApplicationRunner {
 
@@ -26,19 +29,17 @@ public class InitialDatabaseSetupTasks implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        final Optional<RoleEntity> user = roleRepository.findByRoleName(UserRole.USER);
-        if(!user.isPresent()){
-            logger.debug("USER role don't exist, creating USER role");
-            RoleEntity userRoleEntity = new RoleEntity();
-            userRoleEntity.setRoleName(UserRole.USER);
-            roleRepository.save(userRoleEntity);
-        }
-        final Optional<RoleEntity> admin = roleRepository.findByRoleName(UserRole.ADMIN);
-        if(!admin.isPresent()){
-            logger.debug("ADMIN role don't exist, creating ADMIN role");
-            RoleEntity adminRoleEntity = new RoleEntity();
-            adminRoleEntity.setRoleName(UserRole.ADMIN);
-            roleRepository.save(adminRoleEntity);
+        createRoleIfnotExists(USER);
+        createRoleIfnotExists(ADMIN);
+    }
+
+    private void createRoleIfnotExists(final UserRole userRole) {
+        final Optional<RoleEntity> role = roleRepository.findByRoleName(userRole);
+        if (!role.isPresent()) {
+            logger.debug("{} role don't exist, creating role...", userRole.name());
+            RoleEntity roleEntity = new RoleEntity();
+            roleEntity.setRoleName(userRole);
+            roleRepository.save(roleEntity);
         }
     }
 }

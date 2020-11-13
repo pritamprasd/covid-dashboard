@@ -3,6 +3,7 @@ package com.pritamprasad.covid_data_provider.client;
 import com.google.gson.Gson;
 import com.pritamprasad.covid_data_provider.models.DatewiseIndiaCovidApiResponse;
 import com.pritamprasad.covid_data_provider.models.DatewiseIndiaCovidApiResponse.State;
+import com.pritamprasad.covid_data_provider.util.Messages;
 import com.pritamprasad.covid_data_provider.util.UserDefinedProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +52,9 @@ public class Covid19IndiaApiHandler implements CovidApi {
             responseEntity = restTemplate.getForEntity(constructedUrl, String.class);
             apiResponse = parseResponseForSummaryDataByDate(responseEntity.getBody());
             apiResponse.setDateStamp(date);
-            logger.debug("Response obtained for url : {}", constructedUrl);
+            logger.debug(Messages.RESPONSE_OBTAINED_FOR_URL, constructedUrl);
         } catch (URISyntaxException | RestClientException e) {
-            logger.warn("Url construction failed with message : {}", e.getMessage());
+            logger.warn(Messages.URL_CONSTRUCTION_FAILED_WITH_MESSAGE, e.getMessage());
         }
         return ofNullable(apiResponse);
     }

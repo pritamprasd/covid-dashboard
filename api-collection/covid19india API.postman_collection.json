@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4Njc5ODksImV4cCI6MTYwNDg2ODI4OX0.GVtNKQKsedismep72w1GEjYxwq_ozMHJdP06pWd4uekkgeJPWVFuSHzdcUPJ_uDosURorzbMWZSQW77tcmRQew",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjg3NzYsImV4cCI6MTYwNTIyOTA3Nn0.PbWp_UVr85Ch_I55Ar0tVCnUOmqBDVBatg6QQHMo57OG6tY_t34b6I2j4jOLn-0EP6tfP-r4Qu_dO0gBtCs_hg",
 							"type": "string"
 						}
 					]
@@ -21,7 +21,83 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://192.168.56.1:8080/state/",
+					"raw": "http://192.168.56.1:8080/state?countryId=0",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"state"
+					],
+					"query": [
+						{
+							"key": "countryId",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET All District By state Id",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/district?stateid=5",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"district"
+					],
+					"query": [
+						{
+							"key": "stateid",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET state by id with latest data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjg3NzYsImV4cCI6MTYwNTIyOTA3Nn0.PbWp_UVr85Ch_I55Ar0tVCnUOmqBDVBatg6QQHMo57OG6tY_t34b6I2j4jOLn-0EP6tfP-r4Qu_dO0gBtCs_hg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/state/5?start=2020-11-11&end=2020-11-11",
 					"protocol": "http",
 					"host": [
 						"192",
@@ -32,7 +108,210 @@
 					"port": "8080",
 					"path": [
 						"state",
-						""
+						"5"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-11-11"
+						},
+						{
+							"key": "end",
+							"value": "2020-11-11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET district by id with latest data",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/district/7?start=2020-11-11&end=2020-11-11",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"district",
+						"7"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-11-11"
+						},
+						{
+							"key": "end",
+							"value": "2020-11-11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET state by id within given daterange",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/state/5?start=2020-11-03&end=2020-11-11",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"state",
+						"5"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-11-03"
+						},
+						{
+							"key": "end",
+							"value": "2020-11-11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET district by id within given daterange",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/district/7?start=2020-11-03&end=2020-11-11",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"district",
+						"7"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-11-03"
+						},
+						{
+							"key": "end",
+							"value": "2020-11-11"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Overall date range",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/daterange",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"daterange"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Date range",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.56.1:8080/daterange",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"daterange"
 					]
 				}
 			},
@@ -106,6 +385,33 @@
 			"response": []
 		},
 		{
+			"name": "Validate token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDUyMjkxMzUsImV4cCI6MTYwNTIyOTQzNX0.4zTvxHMy5zpce0EwZdF6XT6ut4UrnccYUOBaKpbGgg8v8ixibtQZnrhJ9l8wJ9jlwvoLAMUUyeEpFRaIMK7oVw"
+				},
+				"url": {
+					"raw": "http://192.168.56.1:8080/auth/validate",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"56",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Decode jwt",
 			"request": {
 				"auth": {
@@ -169,213 +475,6 @@
 					"port": "8080",
 					"path": [
 						"admin"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Validate token",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcDEyMyIsImlhdCI6MTYwNDYzMjU4MCwiZXhwIjoxNjA0NjMyODgwfQ.AFOfpqPpdloZA68mDPK6KvkbgTtEIN2aEDLyFKW77i643h07mSEg5puCCG1ErdmelJhNt4tCPkYPbHtzvqgCww"
-				},
-				"url": {
-					"raw": "http://192.168.56.1:8080/auth/validate",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"56",
-						"1"
-					],
-					"port": "8080",
-					"path": [
-						"auth",
-						"validate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Latest data from given state on given date",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NTI3MjIsImV4cCI6MTYwNDg1MzAyMn0.0536iumy8x5FAmlrhSCzFjry-cDDV0F6A2VUVRRLUJsIV4mc2lRnww6_JOVacn_DwMuU8paSkfB_uDddMbGySg",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://192.168.56.1:8080/state/3?date=2020-11-06",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"56",
-						"1"
-					],
-					"port": "8080",
-					"path": [
-						"state",
-						"3"
-					],
-					"query": [
-						{
-							"key": "date",
-							"value": "2020-11-06"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Date range",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NTk2OTEsImV4cCI6MTYwNDg1OTk5MX0.nYnEMHv4FoHZ9I3u2CK9gO8ztS8ypjxNTKzF-sqJcfMyG0GdaC7cxl4OIPijOYSaQEVGPMn0SPbc6pGV5LZCCg",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://192.168.56.1:8080/daterange",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"56",
-						"1"
-					],
-					"port": "8080",
-					"path": [
-						"daterange"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get statedata in between dates",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NjYwNzMsImV4cCI6MTYwNDg2NjM3M30.kU9PWw8_n_SWW5X3sfenuiEugafnGXrBL8K85MwalzmW6wOEwQ69pC8tH_-AD8ON2_7-O_1owxImNvZcr-y3rA",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://192.168.56.1:8080/state/3/2020-11-03/2020-11-06",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"56",
-						"1"
-					],
-					"port": "8080",
-					"path": [
-						"state",
-						"3",
-						"2020-11-03",
-						"2020-11-06"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get district data in between dates",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4NjY0MjksImV4cCI6MTYwNDg2NjcyOX0.ud0oungQDM2zU29V4GGd0jtNC_0iHrrOgjXmFwTWj6L-dyIKgGeU20ermkMg7Q7yUCERIUaAW1r6F1EeDSAljQ",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://192.168.56.1:8080/district/7/2020-11-03/2020-11-06",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"56",
-						"1"
-					],
-					"port": "8080",
-					"path": [
-						"district",
-						"7",
-						"2020-11-03",
-						"2020-11-06"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GET all districts list",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhYmMiLCJpYXQiOjE2MDQ4Njc5ODksImV4cCI6MTYwNDg2ODI4OX0.GVtNKQKsedismep72w1GEjYxwq_ozMHJdP06pWd4uekkgeJPWVFuSHzdcUPJ_uDosURorzbMWZSQW77tcmRQew",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://192.168.56.1:8080/district/?stateid=5",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"56",
-						"1"
-					],
-					"port": "8080",
-					"path": [
-						"district",
-						""
-					],
-					"query": [
-						{
-							"key": "stateid",
-							"value": "5"
-						}
 					]
 				}
 			},

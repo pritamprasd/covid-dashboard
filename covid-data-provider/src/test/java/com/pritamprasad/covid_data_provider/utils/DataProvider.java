@@ -14,6 +14,8 @@ public class DataProvider {
         properties.setDatewiseSummaryUrl("http://localhost/datewisecovidurl/data-YYYY-MM-DD.min.json");
         properties.setJwtExpirationMs(60000);
         properties.setJwtSecret(randomUUID().toString());
+        properties.setTimeTravelMinusDays(2);
+        properties.setPastDataInNumberOfDays(5);
         return properties;
     }
 

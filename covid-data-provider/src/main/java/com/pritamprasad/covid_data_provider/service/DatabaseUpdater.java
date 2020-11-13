@@ -19,6 +19,8 @@ import java.util.Optional;
 
 import static com.pritamprasad.covid_data_provider.models.EntityType.DISTRICT;
 import static com.pritamprasad.covid_data_provider.models.EntityType.STATE;
+import static com.pritamprasad.covid_data_provider.util.Messages.CREATING_NEW_DISTRICT_ENTITY;
+import static com.pritamprasad.covid_data_provider.util.Messages.CREATING_NEW_STATE_ENTITY;
 import static java.util.Collections.emptyMap;
 import static java.util.Optional.ofNullable;
 
@@ -72,7 +74,7 @@ public class DatabaseUpdater {
         if (savedDistrict.isPresent()) {
             currentDistrictId = savedDistrict.get().getId();
         } else {
-            logger.debug("Creating new District Entity.. {}", district.getKey());
+            logger.debug(CREATING_NEW_DISTRICT_ENTITY, district.getKey());
             final LocationEntity districtEntity = LocationEntity.builder()
                     .name(district.getKey())
                     .code(district.getKey())
@@ -92,7 +94,7 @@ public class DatabaseUpdater {
         if (savedState.isPresent()) {
             currentStateId = savedState.get().getId();
         } else {
-            logger.debug("Creating new State Entity.. {}", state.getKey());
+            logger.debug(CREATING_NEW_STATE_ENTITY, state.getKey());
             LocationEntity stateEntity = LocationEntity.builder()
                     .name(state.getKey())
                     .code(state.getKey())
