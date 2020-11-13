@@ -125,13 +125,9 @@ JWTToken:
 - Saved calls for covid19india: https://www.getpostman.com/collections/2afb23eddb8accf94c3e (Import this json in postman)
 
 ##### TODO:
-- Refactor testcases for API
-- Setup CI in Github 
 - API request Validations
-- String literals --> Constants
 - encode signup/login request data with base64, url-escaping
 - setup CSRF token validations, remove @CrossOrigin("*")
-- add more detailed login to API/UI
 - Scheduler if API running for 1+ day
 - Include overall country data for India for deafult dashboard screen.
 - Make mobile/tablet/Large screen specific responsive through CSS.

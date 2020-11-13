@@ -34,7 +34,7 @@ function LoginForm() {
       }
     }).catch(
       err => {
-        console.error("auth/signup api call failed. " + JSON.stringify(err.response.data).data)
+        console.error("auth/signup api call failed. " + JSON.stringify(err?.response?.data).data)
         alert("Signup failed, check username/password are provided.")
         setDisplayLogin(true)
       }
