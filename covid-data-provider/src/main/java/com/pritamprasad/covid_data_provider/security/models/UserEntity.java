@@ -29,6 +29,9 @@ public class UserEntity {
     @Column(nullable = false, length = 64)
     private String password;
 
+    @Column
+    private Boolean isActive;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private Set<RoleEntity> roles = new HashSet<>();
@@ -40,5 +43,6 @@ public class UserEntity {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.isActive = true;
     }
 }
