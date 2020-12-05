@@ -10,7 +10,7 @@ import Menu from '@material-ui/core/Menu';
 import DashboardContainer from './Dashboard/DashboardContainer';
 import store from "../storage/store"
 import { useHistory } from "react-router-dom";
-import Profile from './profile/Profile';
+import ProfileDataContainer from './profile/ProfileDataContainer';
 
 store.subscribe(() => { })
 
@@ -67,7 +67,7 @@ function Home(props) {
                 <DashboardContainer />
             }
             { showProfileState &&
-                <Profile />
+                <ProfileDataContainer />
             }
         </div>
     )
